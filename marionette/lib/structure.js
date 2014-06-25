@@ -9,8 +9,15 @@ define(function defineStructure(require) {
     });
   }
 
+  function extractConstructorAttributes(func, buffer) {
+    String(func).replace(/this.([^\s\r\n\t=]+?)\s*=/g, function(match, name){
+      buffer.push(name);
+    });
+  }
+
   function extractStructure(from) {
     var structure = {};
+    console.log(from.Module)
     Object.keys(from).forEach(function(name) {
       if (name.match(ignoreName)) {
         return;
@@ -33,6 +40,8 @@ define(function defineStructure(require) {
         'events': []
       };
 
+      extractConstructorAttributes(object, struct.attribute);
+
       Object.keys(object).forEach(function(key) {
         var type = _.isFunction(object[key]) ? 'function' : 'property';
         struct[type].push(key);
@@ -47,7 +56,16 @@ define(function defineStructure(require) {
 
       Object.keys(struct).forEach(function(key) {
         struct[key].sort();
-      })
+      });
+      
+      // make sure attributes are unique (possibly set in prototype and constructor)
+      var attributes = [];
+      struct.attribute.forEach(function(key) {
+        if (!attributes.length || key !== attributes[attributes.length -1]) {
+          attributes.push(key);
+        }
+      });
+      struct.attribute = attributes;
     });
 
     return structure;
