@@ -45,6 +45,9 @@ define(function defineStructure(require) {
         extractEvents(prototype[key], struct.events);
       });
 
+      Object.keys(struct).forEach(function(key) {
+        struct[key].sort();
+      })
     });
 
     return structure;
