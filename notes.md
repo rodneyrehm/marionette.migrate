@@ -16,17 +16,27 @@ Without context a simple regular expression based approach will simply not be ab
 
 The [Marionette.Migrate](https://github.com/ccamarat/Marionette.Migrate) plugin reverts some of the deprecations and prints warnings to the browser's console. It hasn't been updated in 5 months, no issues have been reported, and it completely lacks events.
 
+> Read Release Notes and the Change Log, but never rely on them. Only source code knows the truth.
+
+
+## TODO: ##
+
+* [structure.js] initialize every component so attributes can be extracted
+* add resolver from event `initialize:before` to `onInitializeBefore`
+
+* extract function's number of arguments
+* extract function's events
 
 ```
+keep variations in mind:
+
 View
 
   close -> destroy
-
   
 Region
 
   close -> empty
-
 
 CollectionView, CompositeView
 
