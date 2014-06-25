@@ -3,6 +3,12 @@ define(function defineStructure(require) {
 
   var ignoreName =  /^(\$|VERSION|Deferred)$/;
 
+  function extractEvents(object, buffer) {
+    String(object).replace(/\.triggerMethod\((['"])(.+?)\1/g, function(match, quotes, name){
+      buffer.push(name);
+    });
+  }
+
   function extractStructure(from) {
     var structure = {};
     Object.keys(from).forEach(function(name) {
@@ -23,17 +29,20 @@ define(function defineStructure(require) {
         'function': [],
         // prototype
         'attribute': [],
-        'method': []
+        'method': [],
+        'events': []
       };
 
       Object.keys(object).forEach(function(key) {
         var type = _.isFunction(object[key]) ? 'function' : 'property';
         struct[type].push(key);
+        extractEvents(object[key], struct.events);
       });
 
       Object.keys(prototype).forEach(function(key) {
         var type = _.isFunction(prototype[key]) ? 'method' : 'attribute';
         struct[type].push(key);
+        extractEvents(prototype[key], struct.events);
       });
 
     });
