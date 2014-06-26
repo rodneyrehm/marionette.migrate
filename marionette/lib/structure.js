@@ -15,9 +15,20 @@ define(function defineStructure(require) {
     });
   }
 
+  function uniqueSortedArray(source) {
+    // make sure attributes are unique (possibly set in prototype and constructor)
+    var buffer = [];
+    source.forEach(function(key) {
+      if (!buffer.length || key !== buffer[buffer.length -1]) {
+        buffer.push(key);
+      }
+    });
+
+    return buffer;
+  }
+
   function extractStructure(from) {
     var structure = {};
-    console.log(from.Module)
     Object.keys(from).forEach(function(name) {
       if (name.match(ignoreName)) {
         return;
@@ -56,16 +67,8 @@ define(function defineStructure(require) {
 
       Object.keys(struct).forEach(function(key) {
         struct[key].sort();
+        struct[key] = uniqueSortedArray(struct[key]);
       });
-      
-      // make sure attributes are unique (possibly set in prototype and constructor)
-      var attributes = [];
-      struct.attribute.forEach(function(key) {
-        if (!attributes.length || key !== attributes[attributes.length -1]) {
-          attributes.push(key);
-        }
-      });
-      struct.attribute = attributes;
     });
 
     return structure;
