@@ -1,0 +1,13 @@
+{
+  "name": "Marionette.Migrate.Analysis",
+  "version": "0.0.0",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "requirejs-plugins": "~1.0.2",
+    "requirejs": "~2.1.14"
+  }
+}
