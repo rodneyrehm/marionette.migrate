@@ -1,0 +1,509 @@
+{
+  "noConflict": null,
+  "extend": null,
+  "getOption": null,
+  "proxyGetOption": null,
+  "normalizeMethods": null,
+  "normalizeUIKeys": null,
+  "actAsCollection": null,
+  "triggerMethod": null,
+  "MonitorDOMRefresh": {
+    "property": [],
+    "function": [],
+    "attribute": [],
+    "method": [],
+    "events": []
+  },
+  "bindEntityEvents": null,
+  "unbindEntityEvents": null,
+  "proxyBindEntityEvents": null,
+  "proxyUnbindEntityEvents": null,
+  "Callbacks": {
+    "property": [],
+    "function": [],
+    "attribute": [
+      "_callbacks",
+      "_deferred"
+    ],
+    "method": [
+      "add",
+      "reset",
+      "run"
+    ],
+    "events": []
+  },
+  "Controller": {
+    "property": [],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "options",
+      "triggerMethod"
+    ],
+    "method": [
+      "bind",
+      "destroy",
+      "getOption",
+      "listenTo",
+      "listenToOnce",
+      "off",
+      "on",
+      "once",
+      "stopListening",
+      "trigger",
+      "triggerMethod",
+      "unbind"
+    ],
+    "events": []
+  },
+  "Region": {
+    "property": [],
+    "function": [
+      "buildRegion",
+      "extend"
+    ],
+    "attribute": [
+      "$el",
+      "el",
+      "options"
+    ],
+    "method": [
+      "_ensureElement",
+      "attachHtml",
+      "attachView",
+      "bind",
+      "destroy",
+      "empty",
+      "getEl",
+      "getOption",
+      "listenTo",
+      "listenToOnce",
+      "off",
+      "on",
+      "once",
+      "reset",
+      "show",
+      "stopListening",
+      "trigger",
+      "triggerMethod",
+      "unbind"
+    ],
+    "events": [
+      "before:empty",
+      "before:show",
+      "before:swap",
+      "empty",
+      "show",
+      "swap"
+    ]
+  },
+  "RegionManager": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "_regions"
+    ],
+    "method": [
+      "_remove",
+      "_setLength",
+      "_store",
+      "addRegion",
+      "addRegions",
+      "all",
+      "any",
+      "constructor",
+      "contains",
+      "destroy",
+      "detect",
+      "each",
+      "emptyRegions",
+      "every",
+      "filter",
+      "find",
+      "first",
+      "forEach",
+      "get",
+      "getRegions",
+      "include",
+      "initial",
+      "invoke",
+      "isEmpty",
+      "last",
+      "map",
+      "pluck",
+      "reject",
+      "removeRegion",
+      "removeRegions",
+      "rest",
+      "select",
+      "some",
+      "toArray",
+      "without"
+    ],
+    "events": [
+      "add:region",
+      "before:add:region",
+      "before:remove:region",
+      "remove:region"
+    ]
+  },
+  "TemplateCache": {
+    "property": [
+      "templateCaches"
+    ],
+    "function": [
+      "clear",
+      "get"
+    ],
+    "attribute": [
+      "templateId"
+    ],
+    "method": [
+      "compileTemplate",
+      "load",
+      "loadTemplate"
+    ],
+    "events": []
+  },
+  "Renderer": null,
+  "View": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "events",
+      "options"
+    ],
+    "method": [
+      "_delegateDOMEvents",
+      "_ensureViewIsIntact",
+      "bindEntityEvents",
+      "bindUIElements",
+      "configureTriggers",
+      "constructor",
+      "delegateEvents",
+      "destroy",
+      "getOption",
+      "getTemplate",
+      "mixinTemplateHelpers",
+      "normalizeMethods",
+      "normalizeUIKeys",
+      "onShowCalled",
+      "triggerMethod",
+      "unbindEntityEvents",
+      "unbindUIElements",
+      "undelegateEvents"
+    ],
+    "events": []
+  },
+  "ItemView": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [],
+    "method": [
+      "attachElContent",
+      "constructor",
+      "destroy",
+      "render",
+      "serializeData"
+    ],
+    "events": [
+      "before:render",
+      "render"
+    ]
+  },
+  "CollectionView": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "childViewEventPrefix",
+      "sort"
+    ],
+    "method": [
+      "_addChildView",
+      "_initChildViewStorage",
+      "_initialEvents",
+      "_insertAfter",
+      "_insertBefore",
+      "_onCollectionAdd",
+      "_onCollectionRemove",
+      "_renderChildren",
+      "_sortViews",
+      "_triggerBeforeShowBufferedChildren",
+      "_triggerShowBufferedChildren",
+      "_updateIndices",
+      "addChild",
+      "addEmptyView",
+      "attachBuffer",
+      "attachHtml",
+      "buildChildView",
+      "checkEmpty",
+      "constructor",
+      "destroy",
+      "destroyChildren",
+      "destroyEmptyView",
+      "endBuffering",
+      "getChildView",
+      "getEmptyView",
+      "initRenderBuffer",
+      "isEmpty",
+      "onShowCalled",
+      "proxyChildEvents",
+      "removeChildView",
+      "render",
+      "renderChildView",
+      "showCollection",
+      "showEmptyView",
+      "startBuffering"
+    ],
+    "events": [
+      "add:child",
+      "before:add:child",
+      "before:destroy:collection",
+      "before:remove:child",
+      "before:render",
+      "before:render:collection",
+      "before:render:empty",
+      "destroy:collection",
+      "remove:child",
+      "render",
+      "render:collection",
+      "render:empty",
+      "show"
+    ]
+  },
+  "CompositeView": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [],
+    "method": [
+      "_initialEvents",
+      "_insertAfter",
+      "_renderChildren",
+      "_renderRoot",
+      "attachBuffer",
+      "attachElContent",
+      "constructor",
+      "getChildView",
+      "getChildViewContainer",
+      "render",
+      "resetChildViewContainer",
+      "serializeData"
+    ],
+    "events": [
+      "before:render",
+      "before:render:template",
+      "render",
+      "render:template"
+    ]
+  },
+  "LayoutView": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "_firstRender"
+    ],
+    "method": [
+      "_buildRegions",
+      "_initRegionManager",
+      "_initializeRegions",
+      "_reInitializeRegions",
+      "addRegion",
+      "addRegions",
+      "constructor",
+      "destroy",
+      "getRegion",
+      "getRegionManager",
+      "getRegions",
+      "regionClass",
+      "removeRegion",
+      "render"
+    ],
+    "events": [
+      "add:region",
+      "before:add:region",
+      "before:region:add",
+      "before:region:remove",
+      "before:remove:region",
+      "remove:region"
+    ]
+  },
+  "Behavior": {
+    "property": [],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "$",
+      "defaults",
+      "options",
+      "view"
+    ],
+    "method": [
+      "bind",
+      "bindEntityEvents",
+      "destroy",
+      "getOption",
+      "initialize",
+      "listenTo",
+      "listenToOnce",
+      "off",
+      "on",
+      "once",
+      "stopListening",
+      "trigger",
+      "triggerMethod",
+      "unbind",
+      "unbindEntityEvents"
+    ],
+    "events": []
+  },
+  "Behaviors": {
+    "property": [],
+    "function": [
+      "behaviorsLookup",
+      "getBehaviorClass",
+      "parseBehaviors",
+      "wrap"
+    ],
+    "attribute": [],
+    "method": [],
+    "events": []
+  },
+  "AppRouter": {
+    "property": [
+      "__super__"
+    ],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "options"
+    ],
+    "method": [
+      "_addAppRoute",
+      "_getController",
+      "_processOnRoute",
+      "appRoute",
+      "constructor",
+      "getOption",
+      "processAppRoutes"
+    ],
+    "events": []
+  },
+  "Application": {
+    "property": [],
+    "function": [
+      "extend"
+    ],
+    "attribute": [
+      "_initCallbacks",
+      "commands",
+      "reqres",
+      "submodules",
+      "vent"
+    ],
+    "method": [
+      "_initRegionManager",
+      "addInitializer",
+      "addRegions",
+      "bind",
+      "emptyRegions",
+      "execute",
+      "getRegion",
+      "getRegions",
+      "listenTo",
+      "listenToOnce",
+      "module",
+      "off",
+      "on",
+      "once",
+      "removeRegion",
+      "request",
+      "start",
+      "stopListening",
+      "trigger",
+      "triggerMethod",
+      "unbind"
+    ],
+    "events": [
+      "add:region",
+      "before:add:region",
+      "before:remove:region",
+      "before:start",
+      "remove:region",
+      "start"
+    ]
+  },
+  "Module": {
+    "property": [],
+    "function": [
+      "_addModuleDefinition",
+      "_addStartWithParent",
+      "_getDefine",
+      "_getModule",
+      "_getStartWithParent",
+      "create",
+      "extend",
+      "getClass"
+    ],
+    "attribute": [
+      "app",
+      "initialize",
+      "moduleName",
+      "options",
+      "startWithParent",
+      "submodules"
+    ],
+    "method": [
+      "_runModuleDefinition",
+      "_setupInitializersAndFinalizers",
+      "addDefinition",
+      "addFinalizer",
+      "addInitializer",
+      "bind",
+      "initialize",
+      "listenTo",
+      "listenToOnce",
+      "off",
+      "on",
+      "once",
+      "start",
+      "stop",
+      "stopListening",
+      "trigger",
+      "triggerMethod",
+      "unbind"
+    ],
+    "events": [
+      "before:start",
+      "before:stop",
+      "start",
+      "stop"
+    ]
+  }
+}
