@@ -8,7 +8,6 @@
     "itemViewEventPrefix": "childViewEventPrefix",
     "itemViewOptions": "childViewOptions",
     "itemEvents": "childEvents",
-    "itemViewContainer": "childViewContainer",
-    
+    "itemViewContainer": "childViewContainer"
   }
 }
