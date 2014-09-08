@@ -51,24 +51,26 @@
   },
   "CollectionView": {
     "attribute": {
-      "itemViewEventPrefix": "childViewEventPrefix"
+      "itemViewEventPrefix": "childViewEventPrefix",
+      "itemViewOptions": "childViewOptions",
+      "itemEvents": "childEvents"
     },
     "method": {
-      "addChildView": "---TODO---",
-      "addChildViewEventForwarding": "---TODO---",
-      "addItemView": "---TODO---",
-      "appendBuffer": "---TODO---",
-      "appendHtml": "---TODO---",
-      "buildItemView": "---TODO---",
-      "close": "---TODO---",
-      "closeChildren": "---TODO---",
-      "closeEmptyView": "---TODO---",
-      "getItemEvents": "---TODO---",
-      "getItemView": "---TODO---",
-      "removeItemView": "---TODO---",
-      "renderItemView": "---TODO---",
-      "triggerBeforeRender": "---TODO---",
-      "triggerRendered": "---TODO---"
+      "addChildView": "_onCollectionAdd",
+      "addChildViewEventForwarding": "proxyChildEvents",
+      "addItemView": "addChild",
+      "appendBuffer": "attachBuffer",
+      "appendHtml": "attachHtml",
+      "buildItemView": "buildChildView",
+      "close": "destroy",
+      "closeChildren": "destroyChildren",
+      "closeEmptyView": "destroyEmptyView",
+      "getItemEvents": "!obsolete, see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
+      "getItemView": "getChildView",
+      "removeItemView": "_onCollectionRemove",
+      "renderItemView": "renderChildView",
+      "triggerBeforeRender": "!obsolete, use triggerMethod() instead",
+      "triggerRendered": "!obsolete, use triggerMethod() instead"
     },
     "events": {
       "after:item:added": "add:child",
@@ -77,7 +79,7 @@
       "collection:before:render": "before:render:collection",
       "collection:closed": "destroy",
       "collection:rendered": "render:collection",
-      "item:removed": "---TODO---",
+      "item:removed": "remove:child",
       "itemview:*": "childview:*"
     }
   },
@@ -86,9 +88,9 @@
       "itemView": "childView"
     },
     "method": {
-      "getItemViewContainer": "---TODO---",
-      "renderModel": "---TODO---",
-      "resetItemViewContainer": "---TODO---"
+      "getItemViewContainer": "getChildViewContainer",
+      "renderModel": "_renderRoot",
+      "resetItemViewContainer": "resetChildViewContainer"
     },
     "events": {
       "composite:collection:before:render": "before:render:template",
@@ -125,4 +127,9 @@
       "initialize:before": "before:start"
     }
   }
+
+  ,"---TODO---": [
+    "onBeforeClose",
+    "before:item:remove -- maybe CollectionView"
+  ]
 }
