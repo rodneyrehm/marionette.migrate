@@ -18,8 +18,10 @@
     }
   },
   "RegionManager": {
+    "parent": "Controller",
     "method": {
-      "closeRegions": "emptyRegions"
+      "closeRegions": "emptyRegions",
+      "close": "destroy"
     },
     "events": {
       "region:add": "add:region",
@@ -29,7 +31,7 @@
   "View": {
     "attribute": {
       "isClosed": "isDestroyed"
-    }
+    },
     "method": {
       "close": "destroy"
     },
@@ -39,6 +41,7 @@
     }
   },
   "ItemView": {
+    "parent": "View",
     "method": {
       "close": "destroy"
     },
@@ -50,6 +53,7 @@
     }
   },
   "CollectionView": {
+    "parent": "View",
     "attribute": {
       "itemViewEventPrefix": "childViewEventPrefix",
       "itemViewOptions": "childViewOptions",
@@ -84,12 +88,15 @@
     }
   },
   "CompositeView": {
+    "parent": "CollectionView",
     "attribute": {
       "itemView": "childView"
     },
     "method": {
+      "getItemView": "getChildView",
       "getItemViewContainer": "getChildViewContainer",
       "renderModel": "_renderRoot",
+      "appendBuffer": "attachBuffer",
       "resetItemViewContainer": "resetChildViewContainer"
     },
     "events": {
