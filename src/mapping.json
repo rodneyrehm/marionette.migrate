@@ -1,0 +1,128 @@
+{
+  "Controller": {
+    "method": {
+      "close": "destroy"
+    },
+    "events": {
+      "close": "destroy"
+    }
+  },
+  "Region": {
+    "method": {
+      "close": "empty",
+      "ensureEl": "_ensureElement",
+      "open": "attachHtml"
+    },
+    "events": {
+      "close": "empty"
+    }
+  },
+  "RegionManager": {
+    "method": {
+      "closeRegions": "emptyRegions"
+    },
+    "events": {
+      "region:add": "add:region",
+      "region:remove": "remove:region"
+    }
+  },
+  "View": {
+    "attribute": {
+      "isClosed": "isDestroyed"
+    }
+    "method": {
+      "close": "destroy"
+    },
+    "events": {
+      "before:close": "before:destroy",
+      "close": "destroy"
+    }
+  },
+  "ItemView": {
+    "method": {
+      "close": "destroy"
+    },
+    "events": {
+      "item:before:close": "before:destroy",
+      "item:before:render": "before:render",
+      "item:closed": "destroy",
+      "item:rendered": "render"
+    }
+  },
+  "CollectionView": {
+    "attribute": {
+      "itemViewEventPrefix": "childViewEventPrefix"
+    },
+    "method": {
+      "addChildView": "---TODO---",
+      "addChildViewEventForwarding": "---TODO---",
+      "addItemView": "---TODO---",
+      "appendBuffer": "---TODO---",
+      "appendHtml": "---TODO---",
+      "buildItemView": "---TODO---",
+      "close": "---TODO---",
+      "closeChildren": "---TODO---",
+      "closeEmptyView": "---TODO---",
+      "getItemEvents": "---TODO---",
+      "getItemView": "---TODO---",
+      "removeItemView": "---TODO---",
+      "renderItemView": "---TODO---",
+      "triggerBeforeRender": "---TODO---",
+      "triggerRendered": "---TODO---"
+    },
+    "events": {
+      "after:item:added": "add:child",
+      "before:item:added": "before:add:child",
+      "collection:before:close": "before:destroy",
+      "collection:before:render": "before:render:collection",
+      "collection:closed": "destroy",
+      "collection:rendered": "render:collection",
+      "item:removed": "---TODO---",
+      "itemview:*": "childview:*"
+    }
+  },
+  "CompositeView": {
+    "attribute": {
+      "itemView": "childView"
+    },
+    "method": {
+      "getItemViewContainer": "---TODO---",
+      "renderModel": "---TODO---",
+      "resetItemViewContainer": "---TODO---"
+    },
+    "events": {
+      "composite:collection:before:render": "before:render:template",
+      "composite:collection:rendered": "render:collection",
+      "composite:model:rendered": "render:template",
+      "composite:rendered": "render"
+    }
+  },
+  "Layout": {
+    "_name": "LayoutView",
+    "attribute": {
+      "regionType": "regionClass"
+    },
+    "method": {
+      "close": "destroy"
+    }
+  },
+  "Behavior": {
+    "method": {
+      "close": "destroy"
+    }
+  },
+  "Behaviors": {
+    "method": {
+      "behaviors": "destroy"
+    }
+  },
+  "Application": {
+    "method": {
+      "closeRegions": "emptyRegions"
+    },
+    "events": {
+      "initialize:after": "start",
+      "initialize:before": "before:start"
+    }
+  }
+}

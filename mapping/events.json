@@ -1,34 +1,20 @@
 {
   "_global_": {
-    "collection:before:close": "before:destroy",
-    "collection:closed": "destroy",
-    "item:before:close": "before:destroy",
-    "item:closed": "destroy",
+
+    -- ambiguous
     "close": "destroy",
-    "before:item:added": "before:add:child",
-    "after:item:added": "add:child",
+
     "before:item:rendered": "before:render",
-    "item:rendered": "render",
-    "item:before:render": "before:render",
-    "region:add": "add:region",
-    "region:remove": "remove:region",
-    "initialize:before": "before:start",
-    "initialize:after": "start",
-    "composite:collection:before:render": "before:render:template",
-    "composite:model:rendered": "render:template",
-    "composite:rendered": "render",
     "composite:before:render:collection": "before:render:collection",
     "composite:collection:rendered": "render:collection",
     "collection:before:destroy": "before:destroy:collection",
     "collection:destroy": "destroy:collection",
-    "collection:before:render": "before:render:collection",
-    "collection:rendered": "render",
     "before:child:added": "before:add:child",
     "after:child:added": "add:child",
     "before:child:remove": "before:remove:child",
     "child:removed": "remove:child",
-    "region:add": "add:region",
-    "region:remove": "remove:region",
+
+
 
     "itemview:*": "childview:"
   }

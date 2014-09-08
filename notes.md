@@ -10,7 +10,7 @@ Backbone.js     1.0.0       1.1.2
 Marionette      1.0.2       2.0.1
 ```
 
-Marionette is a real problem because so much has changed, see [Marionette.Upgrade](https://github.com/marionettejs/Marionette.Upgrade) to get a feeling. The simple text based (context-free) search and replace offered by Marionette.Upgrade did not help much in our case. I tried walking our codebase and gave up after about 3 hours. The tool was a pain to use (not much context to go on, no change history, …). Also Marionette.Upgrade failed to catch *many* issues ([#11](https://github.com/marionettejs/Marionette.Upgrade/issues/11), [#13](https://github.com/marionettejs/Marionette.Upgrade/issues/13), …) and caused new problems with [Regions](https://github.com/marionettejs/Marionette.Upgrade/issues/8). 
+Upgrading Marionette is a real problem because so much has changed in [version 2](https://github.com/marionettejs/backbone.marionette/releases/tag/v2.0.0), see [Marionette.Upgrade](https://github.com/marionettejs/Marionette.Upgrade) to get a feeling. The simple text based (context-free) search and replace offered by Marionette.Upgrade did not help much in our case. I tried walking our codebase and gave up after about 3 hours. The tool was a pain to use (not much context to go on, no change history, …). Also Marionette.Upgrade failed to catch *many* issues ([#11](https://github.com/marionettejs/Marionette.Upgrade/issues/11), [#13](https://github.com/marionettejs/Marionette.Upgrade/issues/13), …) and caused new problems with [Regions](https://github.com/marionettejs/Marionette.Upgrade/issues/8). 
 
 Without context a simple regular expression based approach will simply not be able to distinguish between the old `View.prototype.close` now being `View.prototype.destroy` and `Region.prototype.close` now being `Region.prototype.empty`
 
@@ -24,8 +24,12 @@ The [Marionette.Migrate](https://github.com/ccamarat/Marionette.Migrate) plugin 
 * [structure.js] initialize every component so attributes can be extracted
 * add resolver from event `initialize:before` to `onInitializeBefore`
 
+* extract "getOption(" calls
+
 * extract function's number of arguments
 * extract function's events
+
+* see https://github.com/marionettejs/backbone.marionette/releases/tag/v2.0.0 for hints
 
 ```
 keep variations in mind:

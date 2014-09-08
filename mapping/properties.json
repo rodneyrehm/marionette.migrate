@@ -2,7 +2,7 @@
   "Region": {
     "regionType": "regionClass"
   },
-  "_global": {
+  "_global_": {
     "isClosed": "isDestroyed",
     "itemView": "childView",
     "itemViewEventPrefix": "childViewEventPrefix",
