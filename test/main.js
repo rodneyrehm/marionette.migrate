@@ -1,5 +1,5 @@
 require.config({
-  baseUrl: '../marionette/2.0.1/lib',
+  baseUrl: '../marionette/2.0.3/lib',
 
   shim: {
     underscore: {

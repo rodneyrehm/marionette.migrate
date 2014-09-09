@@ -1,7 +1,7 @@
 require.config({
   baseUrl: 'lib',
   paths: {
-    underscore: '../2.0.1/lib/underscore',
+    underscore: '../2.0.3/lib/underscore',
     mapping: '../../mapping',
     text: '../bower_components/requirejs-plugins/lib/text',
     json: '../bower_components/requirejs-plugins/src/json'
