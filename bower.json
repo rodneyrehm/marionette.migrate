@@ -1,0 +1,30 @@
+{
+  "name": "Marionette.Migrate",
+  "version": "0.0.0",
+  "authors": [
+    "Rodney Rehm <mail+github@rodneyrehm.de>"
+  ],
+  "description": "Detect and restore APIs or features that have been changed in Backbone.Marionette as of version 2.0.",
+  "main": "src/backbone.marionette.migrate.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "marionette",
+    "migrate"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "*.md",
+    "node_modules",
+    "bower_components",
+    "mapping",
+    "marionette",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "log": "https://github.com/rodneyrehm/log.git#patch-1"
+  }
+}
