@@ -1,46 +1,75 @@
-(function(root, factory) {
+/*
+  # Backbone.Marionette Migration Plugin
 
-  if (typeof define === 'function' && define.amd) {
-    define(['underscore', 'backbone', 'backbone.marionette'], function(_, Backbone, Marionette) {
-      return (root.Marionette = factory(root, _, Backbone, Marionette));
-    });
-  } else if (typeof exports !== 'undefined') {
-    var _ = require('underscore');
-    var Backbone = require('backbone');
-    var Marionette = require('backbone.marionette');
-    module.exports = factory(root, _, Backbone, Marionette);
-  } else {
-    root.Marionette = factory(root, root._, root.Backbone, root.Marionette);
-  }
+  This plugin can be used to detect and restore APIs or features that have been changed in Backbone.Marionette as of version 2.0.
 
-}(this, function(root, _, Backbone, Marionette) {
+  Things this Plugin does not handle:
+    * Regions need to have an element when they're showing a view. Previously you could show a view in a region and if the region didn't have an element on the page at the time, nothing would happen. Now Marionette throws an error so you know immediately that you need to fix something.
+*/
+
+define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, mapping) {
   'use strict';
-  
-  /*
-    Things this Plugin does not handle:
-      * Regions need to have an element when they're showing a view. Previously you could show a view in a region and if the region didn't have an element on the page at the time, nothing would happen. Now Marionette throws an error so you know immediately that you need to fix something.
-  */
 
-  proxyProperty(
-    'API change: Removed the Marionette.$ proxy. We are now using Backbone.$ instead.',
-    Marionette, '$', function() { return Backbone.$; }
-  );
+  function proxyProperty(proxy) {
+    // TODO: check mapping's first character for "!", if so, it's a hint to the docs
 
-  // TODO: check mapping's first character for "!", if so, it's a hint to the docs
-  // TODO: run a function signature comparison of all the mappings
-
-  // TODO: map to new signature Module.initialize(options, moduleName, app) mapped from old Module.initialize(moduleName, app, options)
-
-
-  function proxyProperty(message, object, propertyName, callback) {
-    Object.defineProperty(object, propertyName, {
+    var _message = proxy.message || '_' + proxy.name + '_: the property [c="color:red"]' + proxy.target + '[c] was renamed to [c="color:blue"]' + proxy.source + '[c]';
+    Object.defineProperty(proxy.object, proxy.target, {
+      enumerable: true,
+      configurable: true,
       get: function() {
-        console.warn(message);
-        return callback.call(this);
+        log(_message);
+        return proxy.get ? proxy.get.call(this) : this[proxy.source];
+      },
+      set: function(value) {
+        log(_message + ' - both have been updated, this is the last message for this property of this object');
+        Object.defineProperty(this, proxy.target, {
+          enumerable: true,
+          writable: true,
+          value: value
+        });
+        this[proxy.source] = this[proxy.target];
       }
     });
   }
-  
-  
-  return Marionette;
-}));
+
+  return function bridgeMarionetteMigration(Marionette) {
+
+    // Marionette.$ was dropped
+    proxyProperty({
+      object: Marionette,
+      target: '$',
+      get: function() { return Backbone.$; },
+      message: 'API change: Removed the Marionette.$ proxy. We are now using Backbone.$ instead.',
+    });
+
+    // Marionette.Layout -> Marionette.LayoutView
+    proxyProperty({
+      object: Marionette,
+      name: 'Marionette',
+      target: 'Layout',
+      source: 'LayoutView'
+    });
+
+    // map methods
+    Object.keys(mapping).forEach(function(objectName) {
+      var methods = mapping[objectName].method;
+      var object = Marionette[objectName].prototype;
+      Object.keys(methods).forEach(function(targetName) {
+        var sourceName = methods[targetName];
+        proxyProperty({
+          object: object,
+          name: 'Marionette.' + objectName,
+          target: targetName,
+          source: sourceName
+        });
+      })
+    });
+
+
+    // TODO: map to new signature Module.initialize(options, moduleName, app) mapped from old Module.initialize(moduleName, app, options)
+
+    return Marionette;
+  };
+
+});
