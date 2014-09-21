@@ -36,7 +36,6 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   conti.close
 
   var View = Marionette.View.extend({
-    // FIXME: this should translate to onDestroy()
     onClose: function() {
       console.log('  onClose() event-callback called ');
     }
@@ -52,6 +51,7 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   //   onClose() event-callback called
   //   destroy event triggered
   view.triggerMethod('destroy');
+
   // Marionette.View.trigger(): the event close was renamed to destroy
   //   destroy event triggered
   view.trigger('close');

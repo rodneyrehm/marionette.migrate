@@ -5,6 +5,7 @@
 
   Things this Plugin does not handle:
     * Regions need to have an element when they're showing a view. Previously you could show a view in a region and if the region didn't have an element on the page at the time, nothing would happen. Now Marionette throws an error so you know immediately that you need to fix something.
+    * event-callbacks added to a view after initalization, i.e. not passed to .extend()
 */
 
 define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, mapping) {
@@ -31,7 +32,7 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       set: function(value) {
         log(_message + (!_dropped ? ' - both have been updated' : ''));
         if (!_dropped) {
-          this[proxy.source] = this[proxy.target];
+          this[proxy.source] = value;
         }
       }
     });
