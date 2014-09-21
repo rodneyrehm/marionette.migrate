@@ -33,12 +33,25 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   // Marionette.Controller: the method close was renamed to destroy
   conti.close
 
-  var View = Marionette.View.extend({});
+  var View = Marionette.View.extend({
+    // FIXME: this should translate to onDestroy()
+    onClose: function() {
+      console.log('  onClose() event-callback called ');
+    }
+  });
   var view = new View();
   // Marionette.View: the method close was renamed to destroy
   view.close
-
-  view.on('close', function(){});
+  // no warning because this is correct
+  view.on('destroy', function() {
+    console.log('  destroy event triggered');
+  });
+  // Marionette.View.trigger(): the event close was renamed to destroy
+  //   onClose() event-callback called
+  //   destroy event triggered
+  view.triggerMethod('destroy');
+  // Marionette.View.trigger(): the event close was renamed to destroy
+  //   destroy event triggered
   view.trigger('close');
 
   var CollectionView = Marionette.CollectionView.extend({
