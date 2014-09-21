@@ -3,16 +3,14 @@ define(function defineBackboneMarionetteMigrateMapping(){
 
   // this file came to be by
   //  * looking at https://github.com/marionettejs/Marionette.Upgrade
-  //  * running an runtime-present API diff between version 1.0.x and 2.0.1
+  //  * running a runtime-present-API-diff between version 1.0.x and 2.0.1
   //  * manually comparing function signatures
 
   return {
-    // TODO: [event] before:close
-    // TODO: [event] before:item:remove
-
     "Controller": {
       "method": {
-        "close": "destroy"
+        "close": "destroy",
+        "before:close": "before:destroy"
       },
       "event": {
         "close": "destroy"
@@ -26,7 +24,8 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "open": "attachHtml"
       },
       "event": {
-        "close": "empty"
+        "close": "empty",
+        "before:close": "before:empty",
       }
     },
 
@@ -107,6 +106,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
     "CompositeView": {
       "parent": "CollectionView",
       "attribute": {
+        "itemViewContainer": "childViewContainer",
         "itemView": "childView"
       },
       "method": {
