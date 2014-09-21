@@ -52,6 +52,25 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
     return 'on' + event.replace(splitter, getEventName);
   }
 
+  function callbackToEvent(name) {
+    // this function reverses eventToCallback()
+
+    if (name.slice(0, 2) !== 'on') {
+      return null;
+    }
+
+    // split the event name on every upper-case character
+    var splitter = /[A-Z]/g;
+
+    // take the event section ("section1Section2Section3")
+    // and turn it in to lowercase, colon-delimited name
+    function getEventName(match) {
+      return ':' + match.toLowerCase();
+    }
+
+    return name.replace(splitter, getEventName).slice(3);
+  }
+
   function proxyBackboneEvents(object, mapping, logName) {
     'on once off trigger'.split(' ').forEach(function(methodName) {
       var original = object.prototype[methodName];
@@ -137,9 +156,7 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
         });
       });
 
-      // alias old event callback names to new event callback names (onEventName event-handle-callbacks)
-      // FIXME: this does currently not handle the CollectionView childViewEventPrefix augmented events
-      // FIXME: CollectionView: onAfterItemAdded, onItemviewSomething
+      // alias [static] old event callback names to new event callback names (onEventName event-handle-callbacks)
       var events = mapping[objectName].event;
       Object.keys(events || {}).forEach(function(targetEventName) {
         var targetCallbackName = eventToCallback(targetEventName);
@@ -172,6 +189,46 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
           source: sourceName
         });
       });
+    });
+
+    // map itemViewEventPrefix / childViewEventPrefix event-callbacks
+    ['CollectionView', 'CompositeView'].forEach(function(objectName) {
+      var object = Marionette[objectName];
+      var logName = 'Marionette.' + objectName;
+
+      // alias [dynamic, prefixed] old event callback names to new event callback names (e.g. onItemviewSomething)
+      object.extend = (function(extend) {
+        return function(protoProps, staticProps) {
+          var result = extend.call(this, protoProps, staticProps);
+          var prefix = result.prototype.childViewEventPrefix;
+          Object.keys(protoProps).forEach(function(name) {
+            var event = callbackToEvent(name);
+            if (!event) {
+              return;
+            }
+
+            var _name = event.split(':');
+            if (_name[0] !== 'itemview' || prefix === 'itemview') {
+              return;
+            }
+
+            _name[0] = prefix;
+            _name = _name.join(':');
+            var value = result.prototype[name];
+
+            proxyProperty({
+              object: result.prototype,
+              name: logName,
+              target: name,
+              source: eventToCallback(_name)
+            });
+
+            result.prototype[name] = value;
+          });
+
+          return result;
+        };
+      })(object.extend);
     });
 
     // TODO: map to new signature Module.initialize(options, moduleName, app) mapped from old Module.initialize(moduleName, app, options)

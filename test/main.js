@@ -61,7 +61,7 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
     itemViewEventPrefix: 'item',
     // Marionette.CollectionView: the event-callback onAfterItemAdded was renamed to onAddChild - both have been updated 
     onAfterItemAdded: function() {},
-    // FIXME: this should trigger a warning!
+    // Marionette.CollectionView: the property onItemviewCustom was renamed to onChildviewCustom - both have been updated
     onItemviewCustom: function() {},
     // Marionette.CollectionView: obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents
     getItemEvents: function(){},
