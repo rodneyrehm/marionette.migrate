@@ -70,6 +70,15 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
           var _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + mapping[name] + '[c]';
           log(_message);
           args[0] = mapping[name];
+        } else {
+          // itemview:foobar -> childview:foobar
+          var _name = name.split(':');
+          if (_name[0] === 'itemview' && this.getOption('childViewEventPrefix') !== 'itemview') {
+            _name[0] = this.getOption('childViewEventPrefix');
+            args[0] = _name.join(':');
+            var _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + args[0] + '[c] (see property "childViewEventPrefix")';
+            log(_message);
+          }
         }
 
         return original.apply(this, args);

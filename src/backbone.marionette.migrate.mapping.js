@@ -103,9 +103,6 @@ define(function defineBackboneMarionetteMigrateMapping(){
         // "close": "destroy"
       },
       "event": {
-        // FIXME: this is supposed to handle the childViewEventPrefix stuf??!
-        "itemview:*": "childview:*",
-        // --------
         "after:item:added": "add:child",
         "before:item:added": "before:add:child",
         "collection:before:close": "before:destroy:collection",

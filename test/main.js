@@ -22,6 +22,8 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
 
   // Marionette.$: Removed the Marionette.$ proxy. We are now using Backbone.$ directly.
   Marionette.$('body');
+  // Marionette: the property Layout was renamed to LayoutView
+  Marionette.Layout;
 
   var Conti = Marionette.Controller.extend({
     // Marionette.Controller: the method close was renamed to destroy - both have been updated
@@ -65,4 +67,19 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
     getItemEvents: function(){},
   });
 
+  var collectionView = new CollectionView();
+  // Marionette.CollectionView.on(): the event itemview:custom was renamed to childview:custom (see property "childViewEventPrefix")
+  collectionView.on('itemview:custom', function() {
+    console.log('  itemview:custom event triggered');
+  });
+  collectionView.on('childview:custom', function() {
+    console.log('  childview:custom event triggered');
+  });
+  // Marionette.CollectionView.trigger(): the event itemview:custom was renamed to childview:custom (see property "childViewEventPrefix")
+  //   itemview:custom event triggered
+  //   childview:custom event triggered
+  collectionView.trigger('itemview:custom');
+  //   itemview:custom event triggered
+  //   childview:custom event triggered
+  collectionView.trigger('childview:custom');
 });
