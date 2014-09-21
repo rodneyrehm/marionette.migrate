@@ -4,6 +4,7 @@
   This plugin can be used to detect and restore APIs or features that have been changed in Backbone.Marionette as of version 2.0.
 
   Things this Plugin does not handle:
+    * Changed argument order of Module.initialize - previously (moduleName, app, options) now (options, moduleName, app)
     * Regions need to have an element when they're showing a view. Previously you could show a view in a region and if the region didn't have an element on the page at the time, nothing would happen. Now Marionette throws an error so you know immediately that you need to fix something.
     * event-callbacks added to a view after initalization, i.e. not passed to .extend()
 */
@@ -231,9 +232,6 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
         };
       })(object.extend);
     });
-
-    // TODO: map to new signature Module.initialize(options, moduleName, app) mapped from old Module.initialize(moduleName, app, options)
-    // problem: the only way to infer argument order is by looking at the parameter names - and they don't have to be "moduleName", "app" and "options"
 
     return Marionette;
   };
