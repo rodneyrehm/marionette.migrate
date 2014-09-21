@@ -54,6 +54,31 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
     return 'on' + event.replace(splitter, getEventName);
   }
 
+  function proxyBackboneEvents(object, mapping, logName) {
+    'on once off trigger'.split(' ').forEach(function(methodName) {
+      var original = object.prototype[methodName];
+      if (!original) {
+        return;
+      }
+
+      object.prototype[methodName] = function(name) {
+        if (typeof name !== 'string' || name.indexOf(' ') !== -1) {
+          // arguments have to be processed by Backbone's eventsApi() first
+          return original.apply(this, arguments);
+        }
+
+        var args = [].slice.call(arguments, 0);
+        if (mapping[name]) {
+          var _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + mapping[name] + '[c]';
+          log(_message);
+          args[0] = mapping[name];
+        }
+
+        return original.apply(this, args);
+      }
+    });
+  };
+
   return function bridgeMarionetteMigration(Marionette) {
 
     // Marionette.$ was dropped
@@ -71,8 +96,6 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       target: 'Layout',
       source: 'LayoutView'
     });
-
-    // TODO: duckpuch Marionette.triggerMethod to map events
 
     // map methods, duckpunch extend
     Object.keys(mapping).forEach(function(objectName) {
@@ -93,6 +116,8 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       });
 
       // alias old event callback names to new event callback names (onEventName event-handle-callbacks)
+      // FIXME: this does currently not handle the CollectionView childViewEventPrefix augmented events
+      // FIXME: CollectionView: onAfterItemAdded, onItemviewSomething
       var events = mapping[objectName].event;
       Object.keys(events || {}).forEach(function(targetEventName) {
         var targetCallbackName = eventToCallback(targetEventName);
@@ -107,6 +132,9 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
         });
       });
 
+      // duckpunch Backbone.Events so names can be converted on the fly
+      proxyBackboneEvents(object, events || {}, logName);
+
       // alias old method name to new method name
       var methods = mapping[objectName].method;
       Object.keys(methods || {}).forEach(function(targetName) {
@@ -119,8 +147,6 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
           source: sourceName
         });
       });
-
-      // TODO: duckpunch Marionette.triggerMethod
     });
 
     // TODO: map to new signature Module.initialize(options, moduleName, app) mapped from old Module.initialize(moduleName, app, options)

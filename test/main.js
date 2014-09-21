@@ -38,9 +38,16 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   // Marionette.View: the method close was renamed to destroy
   view.close
 
+  view.on('close', function(){});
+  view.trigger('close');
+
   var CollectionView = Marionette.CollectionView.extend({
     // Marionette.CollectionView: the attribute itemViewEventPrefix was renamed to childViewEventPrefix - both have been updated
     itemViewEventPrefix: 'item',
+    // Marionette.CollectionView: the event-callback onAfterItemAdded was renamed to onAddChild - both have been updated 
+    onAfterItemAdded: function() {},
+    // FIXME: this should trigger a warning!
+    onItemviewCustom: function() {},
   });
 
 });
