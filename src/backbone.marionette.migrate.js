@@ -86,7 +86,7 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       object: Marionette,
       target: '$',
       get: function() { return Backbone.$; },
-      message: 'API change: Removed the Marionette.$ proxy. We are now using Backbone.$ instead.',
+      message: '_Marionette.$:_ Removed the Marionette.$ proxy. We are now using Backbone.$ directly.',
     });
 
     // Marionette.Layout -> Marionette.LayoutView

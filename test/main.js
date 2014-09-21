@@ -20,8 +20,8 @@ require.config({
 require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], function (bridgeMarionetteMigration, Marionette) {
   bridgeMarionetteMigration(Marionette);
 
-  // API change: Removed the Marionette.$ proxy. We are now using Backbone.$ instead.
-  console.log(Marionette.$('body'));
+  // Marionette.$: Removed the Marionette.$ proxy. We are now using Backbone.$ directly.
+  Marionette.$('body');
 
   var Conti = Marionette.Controller.extend({
     // Marionette.Controller: the method close was renamed to destroy - both have been updated
