@@ -1,6 +1,6 @@
 {
   "name": "Marionette.Migrate",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "authors": [
     "Rodney Rehm <mail+github@rodneyrehm.de>"
   ],
@@ -19,7 +19,6 @@
     "*.md",
     "node_modules",
     "bower_components",
-    "mapping",
     "marionette",
     "test",
     "tests"

@@ -1,5 +1,0 @@
-define(function defineMapping(require) {
-
-
-
-});

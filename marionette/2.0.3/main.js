@@ -13,9 +13,7 @@ require.config({
   }
 });
 
-require(['../../lib/structure', 'backbone.marionette'], function (extractStructure, Marionette) {
-  
-  var structure = extractStructure(Marionette);
-  console.log(JSON.stringify(structure, null, 2));
-  
+require(['backbone.marionette'], function (Marionette) {
+  console.log("Loaded Backbone.Marionette 2.0.3");
+  window.Marionette = Marionette;
 });
