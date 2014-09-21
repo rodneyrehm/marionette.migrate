@@ -10,10 +10,11 @@ define(function defineBackboneMarionetteMigrateMapping(){
     "Controller": {
       "method": {
         "close": "destroy",
-        "before:close": "before:destroy"
       },
       "event": {
-        "close": "destroy"
+        // added
+        // "": "before:destroy",
+        "close": "destroy",
       }
     },
 
@@ -21,11 +22,14 @@ define(function defineBackboneMarionetteMigrateMapping(){
       "method": {
         "close": "empty",
         "ensureEl": "_ensureElement",
-        "open": "attachHtml"
+        "open": "attachHtml",
       },
       "event": {
         "close": "empty",
-        "before:close": "before:empty",
+        // added
+        // "": "before:empty",
+        // "": "before:swap"
+        // "": "swap"
       }
     },
 
@@ -33,37 +37,43 @@ define(function defineBackboneMarionetteMigrateMapping(){
       "parent": "Controller",
       "method": {
         "closeRegions": "emptyRegions",
-        "close": "destroy"
+        // inherited:
+        // "close": "destroy"
       },
       "event": {
         "region:add": "add:region",
-        "region:remove": "remove:region"
+        "region:remove": "remove:region",
+        // added
+        // "": "before:add:region",
+        // "": "before:remove:region",
       }
     },
 
     "View": {
       "attribute": {
-        "isClosed": "isDestroyed"
+        "isClosed": "isDestroyed",
       },
       "method": {
-        "close": "destroy"
+        "close": "destroy",
       },
       "event": {
         "before:close": "before:destroy",
-        "close": "destroy"
+        "close": "destroy",
       }
     },
 
     "ItemView": {
       "parent": "View",
       "method": {
-        "close": "destroy"
+        // inherited:
+        // "close": "destroy"
       },
       "event": {
-        "item:before:close": "before:destroy",
-        "item:before:render": "before:render",
-        "item:closed": "destroy",
-        "item:rendered": "render"
+        // removed
+        "item:before:render": "!obsolete event item:before:render",
+        "item:rendered": "!obsolete event item:rendered",
+        "item:before:close": "!obsolete event item:before:close",
+        "item:closed": "!obsolete event item:closed",
       }
     },
 
@@ -72,7 +82,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
       "attribute": {
         "itemViewEventPrefix": "childViewEventPrefix",
         "itemViewOptions": "childViewOptions",
-        "itemEvents": "childEvents"
+        "itemEvents": "childEvents",
       },
       "method": {
         "addChildView": "_onCollectionAdd",
@@ -81,25 +91,32 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "appendBuffer": "attachBuffer",
         "appendHtml": "attachHtml",
         "buildItemView": "buildChildView",
-        "close": "destroy",
         "closeChildren": "destroyChildren",
         "closeEmptyView": "destroyEmptyView",
         "getItemEvents": "!obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
         "getItemView": "getChildView",
         "removeItemView": "_onCollectionRemove",
         "renderItemView": "renderChildView",
-        "triggerBeforeRender": "!obsolete, use triggerMethod() instead",
-        "triggerRendered": "!obsolete, use triggerMethod() instead"
+        "triggerBeforeRender": "!obsolete method triggerBeforeRender(), use triggerMethod() instead",
+        "triggerRendered": "!obsolete method triggerRendered(), use triggerMethod() instead",
+        // inherited:
+        // "close": "destroy"
       },
       "event": {
+        // FIXME: this is supposed to handle the childViewEventPrefix stuf??!
+        "itemview:*": "childview:*",
+        // --------
         "after:item:added": "add:child",
         "before:item:added": "before:add:child",
-        "collection:before:close": "before:destroy",
+        "collection:before:close": "before:destroy:collection",
+        "collection:closed": "destroy:collection",
         "collection:before:render": "before:render:collection",
-        "collection:closed": "destroy",
         "collection:rendered": "render:collection",
         "item:removed": "remove:child",
-        "itemview:*": "childview:*"
+        // added
+        // "": "before:render:empty"
+        // "": "render:empty"
+        // "": "before:remove:child"
       }
     },
 
@@ -107,52 +124,67 @@ define(function defineBackboneMarionetteMigrateMapping(){
       "parent": "CollectionView",
       "attribute": {
         "itemViewContainer": "childViewContainer",
-        "itemView": "childView"
+        "itemView": "childView",
       },
       "method": {
         "getItemView": "getChildView",
         "getItemViewContainer": "getChildViewContainer",
         "renderModel": "_renderRoot",
         "appendBuffer": "attachBuffer",
-        "resetItemViewContainer": "resetChildViewContainer"
+        "resetItemViewContainer": "resetChildViewContainer",
       },
       "event": {
-        "composite:collection:before:render": "before:render:template",
+        "composite:collection:before:render": "before:render:collection",
         "composite:collection:rendered": "render:collection",
         "composite:model:rendered": "render:template",
-        "composite:rendered": "render"
+        "composite:rendered": "render",
+        // added
+        // "": "before:render:template"
       }
     },
 
     "LayoutView": {
       "_name": "Layout",
       "attribute": {
-        "regionType": "regionClass"
+        "regionType": "regionClass",
       },
       "method": {
-        "close": "destroy"
+        "close": "destroy",
+      },
+      "event": {
+        "region:add": "add:region",
+        "region:remove": "remove:region",
+        // added
+        // "": "before:region:add"
+        // "": "before:region:remove"
       }
     },
 
     "Behavior": {
       "method": {
-        "close": "destroy"
+        "close": "destroy",
       }
     },
 
     "Behaviors": {
       "method": {
-        "behaviors": "destroy"
+        "close": "destroy",
       }
     },
 
     "Application": {
       "method": {
-        "closeRegions": "emptyRegions"
+        "closeRegions": "emptyRegions",
       },
       "event": {
-        "initialize:after": "start",
-        "initialize:before": "before:start"
+        "initialize:before": "before:start",
+        // removed
+        "initialize:after": "!obsolete event initialize:after",
+        // added
+        // "": "before:add:region"
+        // "": "add:region"
+        // "": "before:remove:region"
+        // "": "remove:region"
       }
     }
   };
