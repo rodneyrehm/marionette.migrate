@@ -4,6 +4,8 @@ This is a **Work In Progress** (but is `alpha` stage)
 
 ## TODO:
 
+* capture stack trace
+* provide better UI (apart from console so you can maybe filter through the logs?!)
 * convert test/main.js to proper tests (QUnit? Mocha? halp!)
 * Test against Qivicon PairingWizard
 * Write up Readme and blog post
