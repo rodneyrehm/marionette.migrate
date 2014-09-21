@@ -10,8 +10,6 @@
 define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, mapping) {
   'use strict';
 
-  // TODO: walk .event objects and extend() .event of _parent into the list
-
   function proxyProperty(proxy) {
     var _message = proxy.message;
     var _dropped = proxy.source && proxy.source.slice(0, 1) === '!';
@@ -78,6 +76,21 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       }
     });
   };
+
+  // inerhit events from parent
+  // (attributes and methods are stored on the prototype chain)
+  Object.keys(mapping).forEach(function(objectName) {
+    var _parent = mapping[objectName].parent;
+    if (!_parent) {
+      return;
+    }
+
+    // extend so that child still overwrites parent
+    mapping[objectName].event = _.extend(
+      _.clone(_parent.event || {}),
+      mapping[objectName].event || {}
+    );
+  });
 
   return function bridgeMarionetteMigration(Marionette) {
 
