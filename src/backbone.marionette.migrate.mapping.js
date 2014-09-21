@@ -84,7 +84,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "close": "destroy",
         "closeChildren": "destroyChildren",
         "closeEmptyView": "destroyEmptyView",
-        "getItemEvents": "!obsolete, see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
+        "getItemEvents": "!obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
         "getItemView": "getChildView",
         "removeItemView": "_onCollectionRemove",
         "renderItemView": "renderChildView",

@@ -61,6 +61,8 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
     onAfterItemAdded: function() {},
     // FIXME: this should trigger a warning!
     onItemviewCustom: function() {},
+    // Marionette.CollectionView: obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents
+    getItemEvents: function(){},
   });
 
 });

@@ -17,7 +17,7 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
     var _dropped = proxy.source && proxy.source.slice(0, 1) === '!';
     if (!_message) {
       if (_dropped) {
-        _message = proxy.source.slice(1);
+        _message = '_' + proxy.name + '_: ' + proxy.source.slice(1);
       } else {
         _message = '_' + proxy.name + '_: the ' + (proxy.type || 'property') + ' [c="color:red"]' + proxy.target + '[c] was renamed to [c="color:blue"]' + proxy.source + '[c]';
       }
@@ -31,7 +31,7 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
         return proxy.get ? proxy.get.call(this) : this[proxy.source];
       },
       set: function(value) {
-        log(_message + ' - both have been updated');
+        log(_message + (!_dropped ? ' - both have been updated' : ''));
         if (!_dropped) {
           this[proxy.source] = this[proxy.target];
         }
