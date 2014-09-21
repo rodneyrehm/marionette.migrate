@@ -73,7 +73,7 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
         }
 
         return original.apply(this, args);
-      }
+      };
     });
   };
 
@@ -135,7 +135,10 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       Object.keys(events || {}).forEach(function(targetEventName) {
         var targetCallbackName = eventToCallback(targetEventName);
         var sourceEventName = events[targetEventName];
-        var sourceCallbackName = eventToCallback(sourceEventName);
+        var sourceCallbackName = sourceEventName.slice(0, 1) === '!'
+          ? sourceEventName
+          : eventToCallback(sourceEventName);
+
         proxyProperty({
           object: object.prototype,
           name: logName,
