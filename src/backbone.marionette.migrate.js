@@ -14,6 +14,8 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
   // container to overwrite callStack in hit()
   var _globalStack = null;
+  // container to collect hits
+  var _hitLog = [];
 
   function parseTrace(text) {
     var func = text.split('@');
@@ -37,6 +39,11 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     log(message);
     var _trace = (_globalStack || trace).map(parseTrace);
     log('  in [c="color:blue"]' + _trace[0].name + '[c] ' + _trace[0].file.replace(/\/([^\/]+)$/i, hiliteFileName) + ' [c="color:magenta"]line ' + _trace[0].line + '[c]');
+
+    _hitLog.push({
+      message: message,
+      trace: _trace
+    });
   }
 
   function proxyProperty(proxy) {
@@ -152,6 +159,9 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   });
 
   return function bridgeMarionetteMigration(Marionette) {
+
+    // attach hitlog to marionette itself - doesn't have to win a beauty-context...
+    Marionette._migrationLog = _hitLog;
 
     // Marionette.$ was dropped
     proxyProperty({

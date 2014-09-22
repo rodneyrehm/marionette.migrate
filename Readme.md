@@ -8,6 +8,8 @@ This is a **Work In Progress** (but is `alpha` stage)
 * convert test/main.js to proper tests (QUnit? Mocha? halp!)
 * Test against Qivicon PairingWizard
 * Write up Readme and blog post
+  * `bridgeMarionetteMigration(Marionette)` to initialize
+  * `Marionette._migrationLog` to get a list of all migration log hits
 
 
 ---
