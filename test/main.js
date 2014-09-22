@@ -2,7 +2,8 @@ require.config({
   baseUrl: '../marionette/2.0.3/lib',
 
   paths: {
-    log: '../../../bower_components/log/log'
+    log: '../../../bower_components/log/log',
+    stacktrace: '../../../bower_components/jserror/public/js/stacktrace',
   },
 
   shim: {
@@ -17,7 +18,7 @@ require.config({
   }
 });
 
-require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], function (bridgeMarionetteMigration, Marionette) {
+require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], function initializeTest(bridgeMarionetteMigration, Marionette) {
   // engage Migration helper
   bridgeMarionetteMigration(Marionette);
 

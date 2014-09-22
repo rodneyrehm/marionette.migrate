@@ -24,6 +24,7 @@
     "tests"
   ],
   "dependencies": {
-    "log": "https://github.com/rodneyrehm/log.git#patch-1"
+    "log": "https://github.com/rodneyrehm/log.git#patch-1",
+    "jserror": "https://github.com/toddhgardner/jserror.git#master"
   }
 }

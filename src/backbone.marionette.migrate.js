@@ -9,8 +9,35 @@
     * event-callbacks added to a view after initalization, i.e. not passed to .extend()
 */
 
-define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, mapping) {
+define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, stacktrace, mapping) {
   'use strict';
+
+  // container to overwrite callStack in hit()
+  var _globalStack = null;
+
+  function parseTrace(text) {
+    var func = text.split('@');
+    var file = func[1].split(':');
+    var column = file.pop();
+    var line = file.pop();
+    return {
+      name: func[0],
+      file: file.join(':'),
+      line: line,
+      column: column
+    };
+  }
+
+  function hiliteFileName(match, filename) {
+    return '/_' + filename + '_';
+  }
+
+  function hit(message, trace) {
+    console.log('--------------------');
+    log(message);
+    var _trace = parseTrace((_globalStack || trace)[0]);
+    log('  in [c="color:blue"]' + _trace.name + '[c] ' + _trace.file.replace(/\/([^\/]+)$/i, hiliteFileName) + ' [c="color:magenta"]line ' + _trace.line + '[c]');
+  }
 
   function proxyProperty(proxy) {
     var _message = proxy.message;
@@ -27,11 +54,11 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       enumerable: true,
       configurable: true,
       get: function() {
-        log(_message);
+        hit(_message, stacktrace().slice(4));
         return proxy.get ? proxy.get.call(this) : this[proxy.source];
       },
       set: function(value) {
-        log(_message + (!_dropped ? ' - both have been updated' : ''));
+        hit(_message + (!_dropped ? ' - both have been updated' : ''), stacktrace().slice(9));
         if (!_dropped) {
           this[proxy.source] = value;
         }
@@ -81,6 +108,8 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       }
 
       object.prototype[methodName] = function(name) {
+        var _message;
+
         if (typeof name !== 'string' || name.indexOf(' ') !== -1) {
           // arguments have to be processed by Backbone's eventsApi() first
           return original.apply(this, arguments);
@@ -88,8 +117,8 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
 
         var args = [].slice.call(arguments, 0);
         if (mapping[name]) {
-          var _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + mapping[name] + '[c]';
-          log(_message);
+          _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + mapping[name] + '[c]';
+          hit(_message, stacktrace().slice(4));
           args[0] = mapping[name];
         } else {
           // itemview:foobar -> childview:foobar
@@ -97,8 +126,8 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
           if (_name[0] === 'itemview' && this.getOption('childViewEventPrefix') !== 'itemview') {
             _name[0] = this.getOption('childViewEventPrefix');
             args[0] = _name.join(':');
-            var _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + args[0] + '[c] (see property "childViewEventPrefix")';
-            log(_message);
+            _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + args[0] + '[c] (see property "childViewEventPrefix")';
+            hit(_message, stacktrace().slice(4));
           }
         }
 
@@ -201,7 +230,12 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
       // alias [dynamic, prefixed] old event callback names to new event callback names (e.g. onItemviewSomething)
       object.extend = (function(extend) {
         return function(protoProps, staticProps) {
+          // capture stack of extend() call to overwrite call-stack of the actual set within the forEach()
+          var callStack = stacktrace().slice(4);
+          _globalStack = callStack;
           var result = extend.call(this, protoProps, staticProps);
+          _globalStack = null;
+
           var prefix = result.prototype.childViewEventPrefix;
           Object.keys(protoProps).forEach(function(name) {
             var event = callbackToEvent(name);
@@ -225,7 +259,10 @@ define(['underscore', 'backbone', 'log', './backbone.marionette.migrate.mapping'
               source: eventToCallback(_name)
             });
 
+            // print callStack of .extend() call rather than the disconnected .extend() execution
+            _globalStack = callStack;
             result.prototype[name] = value;
+            _globalStack = null;
           });
 
           return result;
