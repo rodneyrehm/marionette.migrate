@@ -7,6 +7,15 @@ define(function defineBackboneMarionetteMigrateMapping(){
   //  * manually comparing function signatures
 
   return {
+    /*
+      upgrade.py: listed but not found in source of Marionette 1.8.8
+      event: {
+        "before:item:rendered"
+        "before:item:remove"
+        "composite:before:render:collection"
+      }
+    */
+
     "Controller": {
       "method": {
         "close": "destroy",
@@ -37,7 +46,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
     "RegionManager": {
       "parent": "Controller",
       "method": {
-        "closeRegions": "emptyRegions",
+        "closeRegions": "emptyRegions", // upgrade.py says "destroyRegions" (but not found in source of 2.0.3)
         // inherited:
         // "close": "destroy"
       },
@@ -71,10 +80,10 @@ define(function defineBackboneMarionetteMigrateMapping(){
       },
       "event": {
         // removed
-        "item:before:render": "!obsolete event item:before:render",
-        "item:rendered": "!obsolete event item:rendered",
-        "item:before:close": "!obsolete event item:before:close",
-        "item:closed": "!obsolete event item:closed",
+        "item:before:render": "!obsolete event item:before:render", // upgrade.py says "before:render" (but that's a different event)
+        "item:rendered": "!obsolete event item:rendered", // upgrade.py says "render" (but that's a different event)
+        "item:before:close": "!obsolete event item:before:close", // upgrade.py says "before:destroy" (but that's a different event)
+        "item:closed": "!obsolete event item:closed", // uprade.py says "destroy" (but that's a different event)
       }
     },
 
@@ -86,7 +95,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "itemEvents": "childEvents",
       },
       "method": {
-        "addChildView": "_onCollectionAdd",
+        "addChildView": "_onCollectionAdd", // upgrade.py says "onChildAdd" (but not found in source of 2.0.3)
         "addChildViewEventForwarding": "proxyChildEvents",
         "addItemView": "addChild",
         "appendBuffer": "attachBuffer",
@@ -96,7 +105,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "closeEmptyView": "destroyEmptyView",
         "getItemEvents": "!obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
         "getItemView": "getChildView",
-        "removeItemView": "_onCollectionRemove",
+        "removeItemView": "_onCollectionRemove", // upgrade.py says "removeChildView" (but expects view not model)
         "renderItemView": "renderChildView",
         "triggerBeforeRender": "!obsolete method triggerBeforeRender(), use triggerMethod() instead",
         "triggerRendered": "!obsolete method triggerRendered(), use triggerMethod() instead",
@@ -106,10 +115,10 @@ define(function defineBackboneMarionetteMigrateMapping(){
       "event": {
         "after:item:added": "add:child",
         "before:item:added": "before:add:child",
-        "collection:before:close": "before:destroy:collection",
-        "collection:closed": "destroy:collection",
+        "collection:before:close": "before:destroy:collection", // upgrade.py sas "before:destroy" (but cannot see where that should happen)
+        "collection:closed": "destroy:collection", // upgrade.py says "destroy" (but cannot see where that should happen)
         "collection:before:render": "before:render:collection",
-        "collection:rendered": "render:collection",
+        "collection:rendered": "render:collection", // upgrade.py says "render" (but cannot see where that should happen)
         "item:removed": "remove:child",
         // added
         // "": "before:render:empty"
@@ -125,14 +134,12 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "itemView": "childView",
       },
       "method": {
-        "getItemView": "getChildView",
         "getItemViewContainer": "getChildViewContainer",
         "renderModel": "_renderRoot",
-        "appendBuffer": "attachBuffer",
         "resetItemViewContainer": "resetChildViewContainer",
       },
       "event": {
-        "composite:collection:before:render": "before:render:collection",
+        "composite:collection:before:render": "before:render:collection", // upgrade.py says "before:render:template" (but that's a different event)
         "composite:collection:rendered": "render:collection",
         "composite:model:rendered": "render:template",
         "composite:rendered": "render",
@@ -172,12 +179,12 @@ define(function defineBackboneMarionetteMigrateMapping(){
 
     "Application": {
       "method": {
-        "closeRegions": "emptyRegions",
+        "closeRegions": "emptyRegions", // upgrade.py says "destroyRegions" (but not found in source of 2.0.3)
       },
       "event": {
         "initialize:before": "before:start",
         // removed
-        "initialize:after": "!obsolete event initialize:after",
+        "initialize:after": "!obsolete event initialize:after", // upgrade.py says "start" (but that's a different event)
         // added
         // "": "before:add:region"
         // "": "add:region"
