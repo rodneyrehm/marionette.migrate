@@ -84,6 +84,11 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "item:rendered": "!obsolete event item:rendered", // upgrade.py says "render" (but that's a different event)
         "item:before:close": "!obsolete event item:before:close", // upgrade.py says "before:destroy" (but that's a different event)
         "item:closed": "!obsolete event item:closed", // uprade.py says "destroy" (but that's a different event)
+        "itemview:item:before:render": "!obsolete event itemview:item:before:render",
+        "itemview:item:rendered": "!obsolete event itemview:item:rendered",
+        "itemview:item:before:close": "!obsolete event itemview:item:before:close",
+        "itemview:item:closed": "!obsolete event itemview:item:closed",
+        "item:before:destroy": "!obsolete event itemview:item:closed",
       }
     },
 
@@ -109,6 +114,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "renderItemView": "renderChildView",
         "triggerBeforeRender": "!obsolete method triggerBeforeRender(), use triggerMethod() instead",
         "triggerRendered": "!obsolete method triggerRendered(), use triggerMethod() instead",
+        "onChildRemove": '_onCollectionRemove',
         // inherited:
         // "close": "destroy"
       },
