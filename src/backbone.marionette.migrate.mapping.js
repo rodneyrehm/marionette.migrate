@@ -19,6 +19,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
     },
 
     "Region": {
+      // show() options.preventClose -> options.preventDestroy
       "method": {
         "close": "empty",
         "ensureEl": "_ensureElement",

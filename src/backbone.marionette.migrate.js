@@ -185,6 +185,19 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
       source: 'LayoutView'
     });
 
+    // Marionette.Region.prototype.show()'s options.preventClose -> options.preventDestroy
+    Marionette.Region.prototype.show = (function(show) {
+      return function marionetteMigrateShow(view, options) {
+        if (options.preventClose) {
+          options.preventDestroy = options.preventClose;
+          delete options.preventClose;
+          hit('_Marionette.Region.show()_: the option [c="color:red"]preventClose[c] was renamed to [c="color:blue"]preventDestroy[c]', stacktrace().slice(4));
+        }
+
+        return show.call(this, view, options);
+      }
+    })(Marionette.Region.prototype.show);
+
     // map methods, duckpunch extend
     Object.keys(mapping).forEach(function(objectName) {
       var object = Marionette[objectName];

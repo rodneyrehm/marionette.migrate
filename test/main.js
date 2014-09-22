@@ -88,4 +88,11 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   //   itemview:custom event triggered
   //   childview:custom event triggered
   collectionView.trigger('childview:custom');
+
+  var region = new Marionette.Region({
+    el: document.getElementById('playground')
+  });
+  region.show(new Marionette.View(), {
+    preventClose: true
+  });
 });
