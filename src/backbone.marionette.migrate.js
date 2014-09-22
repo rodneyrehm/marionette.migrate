@@ -33,10 +33,10 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   }
 
   function hit(message, trace) {
-    console.log('--------------------');
+    log('[c="color:lightgrey"]--------------------[c]');
     log(message);
-    var _trace = parseTrace((_globalStack || trace)[0]);
-    log('  in [c="color:blue"]' + _trace.name + '[c] ' + _trace.file.replace(/\/([^\/]+)$/i, hiliteFileName) + ' [c="color:magenta"]line ' + _trace.line + '[c]');
+    var _trace = (_globalStack || trace).map(parseTrace);
+    log('  in [c="color:blue"]' + _trace[0].name + '[c] ' + _trace[0].file.replace(/\/([^\/]+)$/i, hiliteFileName) + ' [c="color:magenta"]line ' + _trace[0].line + '[c]');
   }
 
   function proxyProperty(proxy) {
