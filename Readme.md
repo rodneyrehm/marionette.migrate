@@ -4,6 +4,8 @@ This is a **Work In Progress** (but is `alpha` stage)
 
 ## TODO:
 
+* Fix missing Marionette.Region's show()'s options.preventClose to preventDestroy (line 512 in old)
+* re-check https://github.com/marionettejs/Marionette.Upgrade/blob/master/upgrade.py#L108
 * convert test/main.js to proper tests (QUnit? Mocha? halp!)
 * Test against Qivicon PairingWizard
 * Write up Readme and blog post
