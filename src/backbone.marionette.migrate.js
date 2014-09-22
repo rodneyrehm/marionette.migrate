@@ -188,15 +188,28 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     // Marionette.Region.prototype.show()'s options.preventClose -> options.preventDestroy
     Marionette.Region.prototype.show = (function(show) {
       return function marionetteMigrateShow(view, options) {
-        if (options.preventClose) {
+        if (Object.property.hasOwnProperty.call(options, 'preventClose')) {
           options.preventDestroy = options.preventClose;
           delete options.preventClose;
           hit('_Marionette.Region.show()_: the option [c="color:red"]preventClose[c] was renamed to [c="color:blue"]preventDestroy[c]', stacktrace().slice(4));
         }
 
         return show.call(this, view, options);
-      }
+      };
     })(Marionette.Region.prototype.show);
+
+    // Marionette.Region.prototype.buildRegion()'s regionConfig.regionType -> regionConfig.regionClass
+    Marionette.Region.prototype.buildRegion = (function(buildRegion) {
+      return function marionetteMigrateBuildRegion(regionConfig, defaultRegionClass) {
+        if (Object.property.hasOwnProperty.call(regionConfig, 'regionType')) {
+          regionConfig.regionClass = regionConfig.regionType;
+          delete regionConfig.regionType;
+          hit('_Marionette.Region.buildRegion()_: the option [c="color:red"]regionType[c] was renamed to [c="color:blue"]regionClass[c]', stacktrace().slice(4));
+        }
+
+        return show.call(this, regionConfig, defaultRegionClass);
+      };
+    })(Marionette.Region.prototype.buildRegion);
 
     // map methods, duckpunch extend
     Object.keys(mapping).forEach(function(objectName) {
