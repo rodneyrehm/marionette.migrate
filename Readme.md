@@ -2,6 +2,15 @@
 
 This is a **Work In Progress** (but is `alpha` stage)
 
+
+## TODO: Look at backward-filling the following:
+
+* [Region] Calling show on a region with the same view that is currently shown is now a noop. Previously the view would be re-rendered. You can force a rerender by passing forceShow: true with the region show options. `MyApp.mainRegion.show(myView, {forceShow: true});`
+* [View] API change: Returning false from onBeforeClose no longer prevents the view from closing. This behavior was inconsistent with the rest of the library, and would require far too much logic to respect in all cases. Instead of returning false, you should handle your logic before calling close on the view.
+* [View] API change: childEvents callbacks no longer receives the event name as the first argument, making the arguments of those callbacks consistent with standard trigger callbacks.
+
+---
+
 ## TODO:
 
 * convert test/main.js to proper tests (QUnit? Mocha? halp!)
@@ -10,8 +19,6 @@ This is a **Work In Progress** (but is `alpha` stage)
   * `bridgeMarionetteMigration(Marionette)` to initialize
   * `bridgeMarionetteMigration(Marionette, function(message, stackTrace){})` to initialize with custom logging message
   * `Marionette._migrationLog` to get a list of all migration log hits
-
-
 
 ---
 ---
@@ -37,9 +44,22 @@ Not believing I was the only one with this problem, I kept searching. The [Mario
 That's when I decided to create Marionette.Migrate (yes, ignoring that the name was already taken) inspired by [jQuery's Migrate Plugin](https://github.com/jquery/jquery-migrate/).
 
 
-## bla bla bla ##
+## bla bla bla Sound Bites bla bla bla ##
 
 > Read Release Notes and the Change Log, but never rely on them. Only source code knows the truth.
 
 * see https://github.com/marionettejs/backbone.marionette/releases/tag/v2.0.0 for hints
+
+---
+
+That leaves me with one of three conclusions:
+
+* I'm taking this stuff way too seriously.
+* Nobody is upgrading existing projects to Marionette v2.0.x.
+* Nobody is using Marionette.
+* I'm not only bad at Math, but also suck at computers, possibly even breathing.
+
+---
+
+I'm still not willing to throw out the entire team's experience of 2 years with this framework, not to mention the labor produced in those two years. So please keep your »Just use AngularJS!« or even better yet »Have you tried ReactJS?« to yourself and your short-lived or recently started projects. Thank you. If you can't deal with this heresy, go read [Ben Vinegar](https://twitter.com/bentlegen)'s excellent post [The best tool for the job, isn’t always](https://medium.com/@bentlegen/the-best-tool-for-the-job-isnt-always-6ed364f3f775).
 
