@@ -21,6 +21,10 @@ require.config({
 require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], function initializeTest(bridgeMarionetteMigration, Marionette) {
   // engage Migration helper
   bridgeMarionetteMigration(Marionette);
+  // bridgeMarionetteMigration(Marionette, function(message, trace) {
+  //   console.warn(message);
+  //   return true;
+  // });
 
   // Marionette.$: Removed the Marionette.$ proxy. We are now using Backbone.$ directly.
   Marionette.$('body');

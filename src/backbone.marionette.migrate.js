@@ -16,6 +16,8 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   var _globalStack = null;
   // container to collect hits
   var _hitLog = [];
+  // custom log message formatting
+  var _customHit = null;
 
   function parseTrace(text) {
     var func = text.split('@');
@@ -35,10 +37,12 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   }
 
   function hit(message, trace) {
-    log('[c="color:lightgrey"]--------------------[c]');
-    log(message);
     var _trace = (_globalStack || trace).map(parseTrace);
-    log('  in [c="color:blue"]' + _trace[0].name + '[c] ' + _trace[0].file.replace(/\/([^\/]+)$/i, hiliteFileName) + ' [c="color:magenta"]line ' + _trace[0].line + '[c]');
+    if (!_customHit || !_customHit(message, _trace)) {
+      log('[c="color:lightgrey"]--------------------[c]');
+      log(message);
+      log('  in [c="color:blue"]' + _trace[0].name + '[c] ' + _trace[0].file.replace(/\/([^\/]+)$/i, hiliteFileName) + ' [c="color:magenta"]line ' + _trace[0].line + '[c]');
+    }
 
     _hitLog.push({
       message: message,
@@ -158,7 +162,9 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     );
   });
 
-  return function bridgeMarionetteMigration(Marionette) {
+  return function bridgeMarionetteMigration(Marionette, customHitCallback) {
+    // expose custom callback for hit logging
+    _customHit = customHitCallback;
 
     // attach hitlog to marionette itself - doesn't have to win a beauty-context...
     Marionette._migrationLog = _hitLog;
