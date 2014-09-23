@@ -101,7 +101,7 @@ All messages are collected and accessible to you at `Marionette._migrationLog` l
 
 ## Possible TODOs
 
-Look at backward-filling the following:
+Look at backward-filling the following, if someone complains:
 
 * [Region] Calling show on a region with the same view that is currently shown is now a noop. Previously the view would be re-rendered. You can force a rerender by passing forceShow: true with the region show options. `MyApp.mainRegion.show(myView, {forceShow: true});`
 * [View] API change: Returning false from onBeforeClose no longer prevents the view from closing. This behavior was inconsistent with the rest of the library, and would require far too much logic to respect in all cases. Instead of returning false, you should handle your logic before calling close on the view.

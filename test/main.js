@@ -74,6 +74,7 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   });
 
   var collectionView = new CollectionView();
+  collectionView = new Marionette.CollectionView();
   // Marionette.CollectionView.on(): the event itemview:custom was renamed to childview:custom (see property "childViewEventPrefix")
   collectionView.on('itemview:custom', function() {
     console.log('  itemview:custom event triggered');
@@ -85,6 +86,7 @@ require(['../../../src/backbone.marionette.migrate', 'backbone.marionette'], fun
   //   itemview:custom event triggered
   //   childview:custom event triggered
   collectionView.trigger('itemview:custom');
+  console.log('triggering childview:custom');
   //   itemview:custom event triggered
   //   childview:custom event triggered
   collectionView.trigger('childview:custom');
