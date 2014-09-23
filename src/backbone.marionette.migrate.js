@@ -18,6 +18,10 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   var _hitLog = [];
   // custom log message formatting
   var _customHit = null;
+  // pattern to ignore internal files (required to adjust the stack trace in proxyProperty() set handler)
+  // I know, this isn't exactly the way to tackle this, but it worked for me.
+  // Feel free to send a PR to fix stack frame detection
+  var _skipTracedFilePattern = /\/((backbone\.(marionette\.)?)|jquery\.)js$/i;
 
   function parseTrace(text) {
     var func = text.split('@');
@@ -41,11 +45,10 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
     // skip backbone.js and backbone.marionette.js internals, possibly triggered by
     // cutting off the first 9 elements in set handler of proxyProperty()
-    // may have killed too much, in that case it's a stack-offset of 5
-    while (_trace[0] && _trace[0].file.match(/\/(backbone\.(marionette\.)?)js$/i)) {
+    while (_trace[0] && _trace[0].file.match(_skipTracedFilePattern)) {
       _trace.shift();
     }
-
+    // proxyProperty() may have killed too much, in that case it's a stack-offset of 4 (5 adding one for hit())
     if (!_trace.length) {
       _trace = stacktrace().slice(5).map(parseTrace);
     }
