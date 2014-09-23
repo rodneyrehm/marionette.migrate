@@ -130,38 +130,18 @@ console.log(JSON.stringify(aggregatedLog, null, 2));
       {
         "line": "30",
         "hits": [
-          {
-            "message": "_Marionette.$:_ Removed the Marionette.$ proxy. We are now using Backbone.$ directly.",
-            "trace": [
-              {
-                "name": "initializeTest",
-                "file": ".../Marionette.Migrate/test/main.js",
-                "line": "30",
-                "column": "13"
-              },
-              // …
-            ]
-          }
+          "_Marionette.$:_ Removed the Marionette.$ proxy. We are now using Backbone.$ directly."
         ]
       },
       {
-        "line": "32",
+        "line": "65",
         "hits": [
-          {
-            "message": "[c=\"font-weight:bold\"]Marionette[c]: the property [c=\"color:red\"]Layout[c] was renamed to [c=\"color:blue\"]LayoutView[c]",
-            "trace": [
-              {
-                "name": "initializeTest",
-                "file": ".../Marionette.Migrate/test/main.js",
-                "line": "32",
-                "column": "13"
-              },
-              // …
-            ]
-          }
+          "[c=\"font-weight:bold\"]Marionette.CollectionView[c]: the attribute [c=\"color:red\"]itemViewEventPrefix[c] was renamed to [c=\"color:blue\"]childViewEventPrefix[c] - both have been updated",
+          "[c=\"font-weight:bold\"]Marionette.CollectionView[c]: the event-callback [c=\"color:red\"]onAfterItemAdded[c] was renamed to [c=\"color:blue\"]onAddChild[c] - both have been updated",
+          "[c=\"font-weight:bold\"]Marionette.CollectionView[c]: obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
+          "[c=\"font-weight:bold\"]Marionette.CollectionView[c]: the property [c=\"color:red\"]onItemviewCustom[c] was renamed to [c=\"color:blue\"]onItemCustom[c] - both have been updated"
         ]
-      },
-      // …
+      }
     ]
   }
 ]

@@ -225,7 +225,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
         var lines = [];
         Object.keys(data[file]).forEach(function(line) {
           var hits = Object.keys(data[file][line]).map(function(key) {
-            return data[file][line][key];
+            return data[file][line][key].message;
           });
           lines.push({
             line: line,
