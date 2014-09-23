@@ -1,8 +1,8 @@
 {
   "name": "Marionette.Migrate",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "authors": [
-    "Rodney Rehm <mail+github@rodneyrehm.de>"
+    "Rodney Rehm <rodney.rehm@medialize.de>"
   ],
   "description": "Detect and restore APIs or features that have been changed in Backbone.Marionette as of version 2.0.",
   "main": "src/backbone.marionette.migrate.js",
