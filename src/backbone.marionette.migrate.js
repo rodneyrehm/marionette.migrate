@@ -199,6 +199,47 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
     // attach hitlog to marionette itself - doesn't have to win a beauty-context...
     Marionette._migrationLog = _hitLog;
+    // expose a simple data aggregator
+    Marionette._aggregateMigrationLog = function() {
+      var data = {};
+      Marionette._migrationLog.forEach(function(entry) {
+        var file = entry.trace[0].file;
+        var line = entry.trace[0].line;
+        var name = entry.trace[0].name;
+
+        if (!data[file]) {
+          data[file] = {};
+        }
+
+        if (!data[file][line]) {
+          // ES6 Set, where are you?!
+          data[file][line] = {};
+        }
+
+        data[file][line][name + ':' + entry.message] = entry;
+      });
+
+      var result = [];
+      // ES6 Object.values() where are you?!
+      Object.keys(data).forEach(function(file) {
+        var lines = [];
+        Object.keys(data[file]).forEach(function(line) {
+          var hits = Object.keys(data[file][line]).map(function(key) {
+            return data[file][line][key];
+          });
+          lines.push({
+            line: line,
+            hits: hits,
+          });
+        });
+        result.push({
+          file: file,
+          lines: lines,
+        });
+      });
+
+      return result;
+    };
 
     // Marionette.$ was dropped
     proxyProperty({

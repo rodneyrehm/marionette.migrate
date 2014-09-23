@@ -116,6 +116,58 @@ All messages are collected and accessible to you at `Marionette._migrationLog` l
 ]
 ```
 
+If you don't feel like playing with the migration log yourself, the `Marionette._aggregateMigrationLog()` be right up your alley. It groups logged messages by file and sorts them by line all the while removing duplicate log messages.
+
+```js
+var aggregatedLog = Marionette._aggregateMigrationLog();
+
+console.log(JSON.stringify(aggregatedLog, null, 2));
+
+[
+  {
+    "file": "http://test.dev/Marionette.Migrate/test/main.js",
+    "lines": [
+      {
+        "line": "30",
+        "hits": [
+          {
+            "message": "_Marionette.$:_ Removed the Marionette.$ proxy. We are now using Backbone.$ directly.",
+            "trace": [
+              {
+                "name": "initializeTest",
+                "file": ".../Marionette.Migrate/test/main.js",
+                "line": "30",
+                "column": "13"
+              },
+              // …
+            ]
+          }
+        ]
+      },
+      {
+        "line": "32",
+        "hits": [
+          {
+            "message": "[c=\"font-weight:bold\"]Marionette[c]: the property [c=\"color:red\"]Layout[c] was renamed to [c=\"color:blue\"]LayoutView[c]",
+            "trace": [
+              {
+                "name": "initializeTest",
+                "file": ".../Marionette.Migrate/test/main.js",
+                "line": "32",
+                "column": "13"
+              },
+              // …
+            ]
+          }
+        ]
+      },
+      // …
+    ]
+  }
+]
+
+```
+
 ## Caveats
 
 By design this utility only works in projects running [`RequireJS`](http://requirejs.org/). As I wrote this utility first and foremost for upgrading the applications at work, I did not care enough to go all UMD. If you see that differently, fix it and send a pull request. (*hinthint*)
