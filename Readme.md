@@ -120,7 +120,6 @@ If you don't feel like playing with the migration log yourself, the `Marionette.
 
 ```js
 var aggregatedLog = Marionette._aggregateMigrationLog();
-
 console.log(JSON.stringify(aggregatedLog, null, 2));
 
 [
@@ -141,11 +140,40 @@ console.log(JSON.stringify(aggregatedLog, null, 2));
           "[c=\"font-weight:bold\"]Marionette.CollectionView[c]: obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
           "[c=\"font-weight:bold\"]Marionette.CollectionView[c]: the property [c=\"color:red\"]onItemviewCustom[c] was renamed to [c=\"color:blue\"]onItemCustom[c] - both have been updated"
         ]
-      }
+      },
     ]
   }
 ]
+```
 
+You can easily get rid of the [log markuo](https://github.com/adamschwartz/log#features) by calling `Marionette._aggregateMigrationLog(true)`:
+
+```js
+var aggregatedLog = Marionette._aggregateMigrationLog(true);
+console.log(JSON.stringify(aggregatedLog, null, 2));
+
+[
+  {
+    "file": "http://test.dev/Marionette.Migrate/test/main.js",
+    "lines": [
+      {
+        "line": "30",
+        "hits": [
+          "_Marionette.$:_ Removed the Marionette.$ proxy. We are now using Backbone.$ directly."
+        ]
+      },
+      {
+        "line": "65",
+        "hits": [
+          "Marionette.CollectionView: the attribute itemViewEventPrefix was renamed to childViewEventPrefix - both have been updated",
+          "Marionette.CollectionView: the event-callback onAfterItemAdded was renamed to onAddChild - both have been updated",
+          "Marionette.CollectionView: obsolete method getItemEvents(), see http://marionettejs.com/docs/marionette.collectionview.html#collectionviews-childevents",
+          "Marionette.CollectionView: the property onItemviewCustom was renamed to onItemCustom - both have been updated"
+        ]
+      },
+    ]
+  }
+]
 ```
 
 ## Caveats

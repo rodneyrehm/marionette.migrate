@@ -12,6 +12,8 @@
 define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, stacktrace, mapping) {
   'use strict';
 
+  // expression to remove log markup
+  var _logMarkup = /\[c[^\]]*\]/g;
   // container to overwrite callStack in hit()
   var _globalStack = null;
   // container to collect hits
@@ -200,7 +202,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     // attach hitlog to marionette itself - doesn't have to win a beauty-context...
     Marionette._migrationLog = _hitLog;
     // expose a simple data aggregator
-    Marionette._aggregateMigrationLog = function() {
+    Marionette._aggregateMigrationLog = function(removeMarkup) {
       var data = {};
       Marionette._migrationLog.forEach(function(entry) {
         var file = entry.trace[0].file;
@@ -225,7 +227,8 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
         var lines = [];
         Object.keys(data[file]).forEach(function(line) {
           var hits = Object.keys(data[file][line]).map(function(key) {
-            return data[file][line][key].message;
+            var message = data[file][line][key].message;
+            return removeMarkup ? message.replace(_logMarkup, '') : message;
           });
           lines.push({
             line: line,
