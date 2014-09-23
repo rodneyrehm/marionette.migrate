@@ -200,7 +200,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     // Marionette.Region.prototype.show()'s options.preventClose -> options.preventDestroy
     Marionette.Region.prototype.show = (function(show) {
       return function marionetteMigrateShow(view, options) {
-        if (options && Object.property.hasOwnProperty.call(options, 'preventClose')) {
+        if (options && Object.prototype.hasOwnProperty.call(options, 'preventClose')) {
           options.preventDestroy = options.preventClose;
           delete options.preventClose;
           hit('[c="font-weight:bold"]Marionette.Region.show()[c]: the option [c="color:red"]preventClose[c] was renamed to [c="color:blue"]preventDestroy[c]', stacktrace().slice(4));
@@ -213,7 +213,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     // Marionette.Region.prototype.buildRegion()'s regionConfig.regionType -> regionConfig.regionClass
     Marionette.Region.prototype.buildRegion = (function(buildRegion) {
       return function marionetteMigrateBuildRegion(regionConfig, defaultRegionClass) {
-        if (regionConfig && Object.property.hasOwnProperty.call(regionConfig, 'regionType')) {
+        if (regionConfig && Object.prototype.hasOwnProperty.call(regionConfig, 'regionType')) {
           regionConfig.regionClass = regionConfig.regionType;
           delete regionConfig.regionType;
           hit('[c="font-weight:bold"]Marionette.Region.buildRegion()[c]: the option [c="color:red"]regionType[c] was renamed to [c="color:blue"]regionClass[c]', stacktrace().slice(4));
