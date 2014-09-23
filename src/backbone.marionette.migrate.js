@@ -33,7 +33,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   }
 
   function hiliteFileName(match, filename) {
-    return '/_' + filename + '_';
+    return '/[c="font-weight:bold"]' + filename + '[c]';
   }
 
   function hit(message, trace) {
@@ -55,9 +55,9 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     var _dropped = proxy.source && proxy.source.slice(0, 1) === '!';
     if (!_message) {
       if (_dropped) {
-        _message = '_' + proxy.name + '_: ' + proxy.source.slice(1);
+        _message = '[c="font-weight:bold"]' + proxy.name + '[c]: ' + proxy.source.slice(1);
       } else {
-        _message = '_' + proxy.name + '_: the ' + (proxy.type || 'property') + ' [c="color:red"]' + proxy.target + '[c] was renamed to [c="color:blue"]' + proxy.source + '[c]';
+        _message = '[c="font-weight:bold"]' + proxy.name + '[c]: the ' + (proxy.type || 'property') + ' [c="color:red"]' + proxy.target + '[c] was renamed to [c="color:blue"]' + proxy.source + '[c]';
       }
     }
 
@@ -128,7 +128,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
         var args = [].slice.call(arguments, 0);
         if (mapping[name]) {
-          _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + mapping[name] + '[c]';
+          _message = _message = '[c="font-weight:bold"]' + logName + '.' + methodName + '()[c]: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + mapping[name] + '[c]';
           hit(_message, stacktrace().slice(4));
           args[0] = mapping[name];
         } else {
@@ -137,7 +137,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
           if (_name[0] === 'itemview' && this.getOption('childViewEventPrefix') !== 'itemview') {
             _name[0] = this.getOption('childViewEventPrefix');
             args[0] = _name.join(':');
-            _message = _message = '_' + logName + '.' + methodName + '()_: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + args[0] + '[c] (see property "childViewEventPrefix")';
+            _message = _message = '[c="font-weight:bold"]' + logName + '.' + methodName + '()[c]: the event [c="color:red"]' + name + '[c] was renamed to [c="color:blue"]' + args[0] + '[c] (see property "childViewEventPrefix")';
             hit(_message, stacktrace().slice(4));
           }
         }
@@ -191,7 +191,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
         if (options && Object.property.hasOwnProperty.call(options, 'preventClose')) {
           options.preventDestroy = options.preventClose;
           delete options.preventClose;
-          hit('_Marionette.Region.show()_: the option [c="color:red"]preventClose[c] was renamed to [c="color:blue"]preventDestroy[c]', stacktrace().slice(4));
+          hit('[c="font-weight:bold"]Marionette.Region.show()[c]: the option [c="color:red"]preventClose[c] was renamed to [c="color:blue"]preventDestroy[c]', stacktrace().slice(4));
         }
 
         return show.call(this, view, options);
@@ -204,7 +204,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
         if (regionConfig && Object.property.hasOwnProperty.call(regionConfig, 'regionType')) {
           regionConfig.regionClass = regionConfig.regionType;
           delete regionConfig.regionType;
-          hit('_Marionette.Region.buildRegion()_: the option [c="color:red"]regionType[c] was renamed to [c="color:blue"]regionClass[c]', stacktrace().slice(4));
+          hit('[c="font-weight:bold"]Marionette.Region.buildRegion()[c]: the option [c="color:red"]regionType[c] was renamed to [c="color:blue"]regionClass[c]', stacktrace().slice(4));
         }
 
         return show.call(this, regionConfig, defaultRegionClass);
