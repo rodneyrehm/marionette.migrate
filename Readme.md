@@ -57,25 +57,46 @@ require.config({
 });
 ```
 
-You can customize Marionette.Migrate's logging behavior by passing in a callback function at initialization:
+You can customize Marionette.Migrate's logging behavior at initialization:
 
 ```js
 require(['backbone.marionette.migrate', 'backbone.marionette.orig'], function(migrate, Marionette) {
   // engage migration bridge with default config
   return migrate(Marionette);
 
-  // engage migration bridge with custom logging
-  return migrate(Marionette, function(message, stack) {
-    // handle the notification
-    // message: string, marked up with log syntax: https://github.com/adamschwartz/log#features
-    console.log(message);
-    // stack: array of {name: 'my_initializer', file: 'script.js', line: '216', column: '32'}
-    console.log("in file", stack[0].file);
+  // or go custom with options:
+  var options = {
+    // callback to log migration issues
+    callback: function(message, stack) {
+      // handle the notification
+      // message: string, marked up with log syntax: https://github.com/adamschwartz/log#features
+      console.log(message);
+      // stack: array of {name: 'my_initializer', file: 'script.js', line: '216', column: '32'}
+      console.log("in file", stack[0].file);
 
-    // return true to prevent Marionette.Migrate from logging itself
-    return true;
+      // return true to prevent Marionette.Migrate from logging itself
+      return true;
+    },
+    // callback to filter stack traces, invoked just before options.callback()
+    filter: function(stack) {
+      return stack.slice(1);
+    },
+    // regular expression used to overwrite internal options.filter() implementation
+    // useful to skip internal libraries like backbone, marionette, jquery, etc.
+    // (use either options.filter or options.filterExpression)
+    filterExpression: /\/((backbone\.(marionette\.)?)|jquery\.)js$/i,
+  };
+  return migrate(Marionette, options);
+
+  // or prevent console logging completely:
+  // messages will still be available in Marionette._migrationLog
+  return migrate(Marionette, {
+    callback: function() {
+      return true;
+    }
   });
 });
+
 ```
 
 All messages are collected and accessible to you at `Marionette._migrationLog` looking something like the following snippet. This can be used to aggregate all hits, remove duplicates, sort by file and line, and provide your developers a nicer "task list". Note that Marionette.Migrate itself does not yet provide such an utility (PRs welcome, though).

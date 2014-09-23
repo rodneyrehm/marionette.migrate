@@ -21,7 +21,20 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
   // pattern to ignore internal files (required to adjust the stack trace in proxyProperty() set handler)
   // I know, this isn't exactly the way to tackle this, but it worked for me.
   // Feel free to send a PR to fix stack frame detection
-  var _skipTracedFilePattern = /\/((backbone\.(marionette\.)?)|jquery\.)js$/i;
+  var _traceFilterExpression = /\/((backbone\.(marionette\.)?)|jquery\.)js$/i;
+  var _traceFilter = function(_trace) {
+    // skip backbone.js and backbone.marionette.js internals, possibly triggered by
+    // cutting off the first 9 elements in set handler of proxyProperty()
+    while (_trace[0] && _trace[0].file.match(_traceFilterExpression)) {
+      _trace.shift();
+    }
+    // proxyProperty() may have killed too much, in that case it's a stack-offset of 4 (5 adding one for hit())
+    if (!_trace.length) {
+      _trace = stacktrace().slice(6).map(parseTrace);
+    }
+
+    return _trace;
+  };
 
   function parseTrace(text) {
     var func = text.split('@');
@@ -42,16 +55,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
   function hit(message, trace) {
     var _trace = (_globalStack || trace).map(parseTrace);
-
-    // skip backbone.js and backbone.marionette.js internals, possibly triggered by
-    // cutting off the first 9 elements in set handler of proxyProperty()
-    while (_trace[0] && _trace[0].file.match(_skipTracedFilePattern)) {
-      _trace.shift();
-    }
-    // proxyProperty() may have killed too much, in that case it's a stack-offset of 4 (5 adding one for hit())
-    if (!_trace.length) {
-      _trace = stacktrace().slice(5).map(parseTrace);
-    }
+    _trace = _traceFilter(_trace);
 
     if (!_customHit || !_customHit(message, _trace)) {
       log('[c="color:lightgrey"]--------------------[c]');
@@ -177,9 +181,21 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
     );
   });
 
-  return function bridgeMarionetteMigration(Marionette, customHitCallback) {
+  return function bridgeMarionetteMigration(Marionette, options) {
     // expose custom callback for hit logging
-    _customHit = customHitCallback;
+    if (options && options.callback) {
+      _customHit = options && options.callback;
+    }
+
+    // expose custom trace filter for skipping internals
+    if (options && options.filter) {
+      _traceFilter = options && options.filter;
+    }
+
+    // expose custom RegExp for skipping internals
+    if (options && options.filterExpression) {
+      _traceFilterExpression = options && options.filterExpression;
+    }
 
     // attach hitlog to marionette itself - doesn't have to win a beauty-context...
     Marionette._migrationLog = _hitLog;
