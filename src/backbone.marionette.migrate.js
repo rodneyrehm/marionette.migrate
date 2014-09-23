@@ -38,6 +38,18 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
   function hit(message, trace) {
     var _trace = (_globalStack || trace).map(parseTrace);
+
+    // skip backbone.js and backbone.marionette.js internals, possibly triggered by
+    // cutting off the first 9 elements in set handler of proxyProperty()
+    // may have killed too much, in that case it's a stack-offset of 5
+    while (_trace[0] && _trace[0].file.match(/\/(backbone\.(marionette\.)?)js$/i)) {
+      _trace.shift();
+    }
+
+    if (!_trace.length) {
+      _trace = stacktrace().slice(5).map(parseTrace);
+    }
+
     if (!_customHit || !_customHit(message, _trace)) {
       log('[c="color:lightgrey"]--------------------[c]');
       log(message);
