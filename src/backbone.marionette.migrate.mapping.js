@@ -98,6 +98,7 @@ define(function defineBackboneMarionetteMigrateMapping(){
         "itemViewEventPrefix": "childViewEventPrefix",
         "itemViewOptions": "childViewOptions",
         "itemEvents": "childEvents",
+        "itemView": "childView",
       },
       "method": {
         "addChildView": "_onCollectionAdd", // upgrade.py says "onChildAdd" (but not found in source of 2.0.3)
@@ -137,7 +138,6 @@ define(function defineBackboneMarionetteMigrateMapping(){
       "parent": "CollectionView",
       "attribute": {
         "itemViewContainer": "childViewContainer",
-        "itemView": "childView",
       },
       "method": {
         "getItemViewContainer": "getChildViewContainer",
