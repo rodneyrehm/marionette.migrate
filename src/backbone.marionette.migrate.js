@@ -25,7 +25,7 @@ define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.mi
 
   function parseTrace(text) {
     var func = text.split('@');
-    var file = func[1].split(':');
+    var file = (func[1] || "").split(':');
     var column = file.pop();
     var line = file.pop();
     return {
