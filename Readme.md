@@ -14,11 +14,74 @@ This is a **Work In Progress** (but is `alpha` stage)
 ## TODO: general project stuff
 
 * convert test/main.js to proper tests (QUnit? Mocha? halp!)
-* Test against Qivicon PairingWizard
-* Write up Readme and blog post
-  * `bridgeMarionetteMigration(Marionette)` to initialize
-  * `bridgeMarionetteMigration(Marionette, function(message, stackTrace){})` to initialize with custom logging message
-  * `Marionette._migrationLog` to get a list of all migration log hits
+
+---
+
+## API "Documentation"
+
+```js
+// to load Marionette.Migrate without customization,
+// simply configure the paths accordingly:
+require.config({
+  paths: {
+    // …
+
+    // Marionette dependencies
+    'underscore': 'bower_components/Marionette.Migrate/marionette/2.0.3/lib/underscore',
+    'backbone': 'bower_components/Marionette.Migrate/marionette/2.0.3/lib/backbone',
+    'backbone.babysitter': 'bower_components/Marionette.Migrate/marionette/2.0.3/lib/backbone.babysitter',
+    'backbone.wreqr': 'bower_components/Marionette.Migrate/marionette/2.0.3/lib/backbone.wreqr',
+    // paths loaded by Marionette.Migrate
+    'backbone.marionette.orig': 'bower_components/Marionette.Migrate/marionette/2.0.3/lib/backbone.marionette',
+    'log': 'bower_components/log/log',
+    'stacktrace': 'bower_components/jserror/public/js/stacktrace',
+    // internal paths, because RequireJS does something weird
+    'backbone.marionette.migrate': 'bower_components/Marionette.Migrate/src/backbone.marionette.migrate',
+    'backbone.marionette.migrate.mapping': 'bower_components/Marionette.Migrate/src/backbone.marionette.migrate.mapping',
+    // expose the bridge as if it were Marionette itself
+    'backbone.marionette': 'bower_components/Marionette.Migrate/src/engage-bridge',
+  }
+});
+```
+
+You can customize Marionette.Migrate's logging behavior by passing in a callback function at initialization:
+
+```js
+require(['backbone.marionette.migrate', 'backbone.marionette.orig'], function(migrate, Marionette) {
+  // engage migration bridge with default config
+  return migrate(Marionette);
+
+  // engage migration bridge with custom logging
+  return migrate(Marionette, function(message, stack) {
+    // handle the notification
+    // message: string, marked up with log syntax: https://github.com/adamschwartz/log#features
+    console.log(message);
+    // stack: array of {name: 'my_initializer', file: 'script.js', line: '216', column: '32'}
+    console.log("in file", stack[0].file);
+
+    // return true to prevent Marionette.Migrate from logging itself
+    return true;
+  });
+});
+```
+
+All messages are collected and accessible to you at `Marionette._migrationLog` looking something like this:
+
+```js
+[
+  {
+    'message': '_Marionette.Region_: the method [c="color:red"]open[c] was renamed to [c="color:blue"]attachHtml[c] - both have been updated',
+    'trace': [
+      {
+        'name': 'my_initializer',
+        'file': 'script.js',
+        'line': '216',
+        'column': '32'
+      }
+    ]
+  }
+]
+```
 
 ---
 ---
