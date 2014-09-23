@@ -1,14 +1,14 @@
-/*
-  # Backbone.Marionette Migration Plugin
-
-  This plugin can be used to detect and restore APIs or features that have been changed in Backbone.Marionette as of version 2.0.
-
-  Things this Plugin does not handle:
-    * Changed argument order of Module.initialize - previously (moduleName, app, options) now (options, moduleName, app)
-    * Regions need to have an element when they're showing a view. Previously you could show a view in a region and if the region didn't have an element on the page at the time, nothing would happen. Now Marionette throws an error so you know immediately that you need to fix something.
-    * event-callbacks added to a view after initalization, i.e. not passed to .extend()
-*/
-
+/*!
+ * Backbone.Marionette Migration Plugin
+ *
+ * Version: 0.1.0
+ *
+ * Author: Rodney Rehm
+ * Web: https://github.com/rodneyrehm/Marionette.Migrate
+ *
+ * Licensed under
+ *   MIT License http://www.opensource.org/licenses/mit-license
+ */
 define(['underscore', 'backbone', 'log', 'stacktrace', './backbone.marionette.migrate.mapping'], function(_, Backbone, log, stacktrace, mapping) {
   'use strict';
 
